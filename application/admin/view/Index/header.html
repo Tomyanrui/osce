@@ -1,0 +1,40 @@
+<div class="page-header">
+        <div class="leftside-header">
+            <div class="logo">
+                <a href="{:url('Index/index')}" class="on-click" style="color:#ffffff;font-size:3.15385rem;width:100%;display:block;height:100%;text-align:center;line-height:50px;">
+                   OSCE
+                </a>
+            </div>
+            <div id="menu-toggle" class="visible-xs toggle-left-sidebar" data-toggle-class="left-sidebar-open" data-target="html">
+                <i class="fa fa-bars" aria-label="Toggle sidebar"></i>
+            </div>
+        </div>
+        <div class="rightside-header">
+            
+            
+            <div class="header-section" id="user-headerbox">
+                <div class="user-header-wrap">
+                    <div class="user-photo">
+                        <img src="__PUBLIC__/images/avatar_1.jpg" alt="Jane Doe" />
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">{$Think.session.username}</span>
+                        <span class="user-profile" style="text-align: center;">{if condition="(role()==1)"}学务处{else/}教授 {/if}</span>
+                    </div>
+                    <i class="fa fa-plus icon-open" aria-hidden="true"></i>
+                    <i class="fa fa-minus icon-close" aria-hidden="true"></i>
+                </div>
+                <div class="user-options dropdown-box">
+                    <div class="drop-content basic">
+                        <ul>
+                          
+                             <li><a href="{:url('Login/changePassword')}"><i class="fa fa-cog" aria-hidden="true"></i> 修改密码</a></li>
+                            <li> <a href="{:url('Login/loginout')}"><i class="fa fa-lock" aria-hidden="true"></i> 退出</a></li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>

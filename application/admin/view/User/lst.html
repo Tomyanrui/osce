@@ -1,0 +1,87 @@
+{include file="Index/top"/}
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">用户中心</a></li>
+                        <li><a>列表</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                     <h4 class="section-subtitle">
+                   <a class="btn btn-wide  btn-lighter-1" href="{:url('User/add')}">添加用户</a>
+                  
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>员工编号</th>
+                                        <th>姓名</th>
+                                        <th>联系方式</th>
+
+                                        <th>科室</th>
+                                        <th>职位(角色)</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="userInfo" id="vo"}
+                                    <tr>
+                                        <td>{$vo.employeeNumber}</td>
+                                        <td>{$vo.username}</td>
+                                        <td>{$vo.phone}</td>
+                                        <td>{$vo.department}</td>
+                                        <td>{if condition="$vo.roleId eq 1"}学务处{elseif condition="$vo.roleId eq 2"/}教授{elseif condition="$vo.roleId eq 3"/}实习生{else/}未知{/if}</td>
+                                        <td>
+                                        <a href="{:url('User/add?id='.$vo.id)}">编辑</a>&nbsp;&nbsp;&nbsp;
+                                        <a href="javascript:;" data-target="#warning-modal" data-toggle="modal" onclick="del({$vo.id})">删除</a>
+                                        </td>
+                                    </tr>
+                                    {/volist}
+                                    
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {include file="Index/alert"/}
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/jquery.dataTables.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/dataTables.bootstrap.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/tables/data-tables.js"></script>
+<script>
+function del(id){
+    $("button[name='ok']").click(function(){
+       url="{:url('User/delUser')}?id="+id;
+       window.location.href=url;
+
+    });
+}
+</script>
+</body>
+
+</html>

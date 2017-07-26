@@ -1,0 +1,184 @@
+{include file="Index/top"/}
+
+<body>
+<div class="wrap">
+    {include file="Index/header"/}
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理</a></li>
+                        <li><a href="{:url('Kaoan/station')}?caseId={$caseId}">考站列表</a></li>
+                        <li><a>考站设计</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInUp">
+               
+                <div class="col-sm-12">
+                    <h4 class="section-subtitle">
+                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="detail" class="form-horizontal form-stripe" action="" method="post">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">姓名<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="name" name="name" value="<?php if(isset($detail['name']))echo  $detail['name'];?>" required>
+                                            </div>
+                                        </div>
+                                       <?php if(isset($detail['Id'])){?>
+                                        <input type="hidden" name="detailId" value="{$detail['Id']}"/>
+                                        <?php }?>
+                                       <div class="form-group">
+                                            <label for="righticon" class="col-sm-3 control-label">性别<span class="required">*</span></label>
+                                       <div class="col-sm-6">
+                                                <div class="radio radio-custom radio-inline radio-primary">
+                                                    <input type="radio" id="radioCustom6" name="sex" value="1" 
+                                                    <?php if(isset($detail['sex']) && $detail['sex']==1 ){echo 'checked';}?>
+                                                    />
+                                                    <label for="radioCustom6">男</label>
+                                                    </div>
+                                                <div class="radio radio-custom radio-inline radio-primary">
+                                                    <input type="radio" id="radioCustom7" name="sex" value="2"
+                                                    <?php if(isset($detail['sex']) && $detail['sex']==2 ){echo 'checked';}?> />
+                                                    <label for="radioCustom7">女</label>
+                                                  </div>  
+                                                  <div class="radio radio-custom radio-inline radio-primary">
+                                                    <input type="radio" id="radioCustom8" name="sex" value="3"
+                                                      <?php if(isset($detail['sex']) && $detail['sex']==3 ){echo 'checked';}?> 
+                                                      <?php if(!isset($detail['sex'])){echo 'checked';}?>
+                                                    />
+                                                    <label for="radioCustom8">保密</label>
+                                                  </div>    
+                                                
+                                        </div>
+                                                
+                                            </div>
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">年龄<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="age" name="age" value="<?php if(isset($detail['age']))echo  $detail['age'];?>" required>
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">职业<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select name="job" id="select2-example-basic" class="form-control" style="width: 100%">
+                                                        <option value="" label="请选择">请选择</option>
+                                                        <option value="1" label="教师" <?php if(isset($detail['job'])&& ($detail['job']==1)){echo  'selected';}?>>教师</option>
+                                                        <option value="2" label="学生" <?php if(isset($detail['job'])&& ($detail['job']==2)){echo  'selected';}?>>学生</option>
+                                                        <option value="3" label="司机" <?php if(isset($detail['job'])&& ($detail['job']==3)){echo  'selected';}?>>司机</option>
+                                                        <option value="4" label="公司职工" <?php if(isset($detail['job'])&& ($detail['job']==4)){echo  'selected';}?>>公司职工</option>
+                                                         <option value="5" label="医生" <?php if(isset($detail['job'])&& ($detail['job']==5)){echo  'selected';}?>>医生</option>
+                                                        <option value="4" label="其他" <?php if(isset($detail['job'])&& ($detail['job']==4)){echo  'selected';}?>>其他</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">学历<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select name="school" id="select2-example-basic" class="form-control" style="width: 100%">
+                                                        <option value="" label="请选择">请选择</option>
+                                                        <option value="1" label="博士"  <?php if(isset($detail['school'])&& ($detail['school']==1)){echo  'selected';}?>>博士</option>
+                                                        <option value="2" label="研究生" <?php if(isset($detail['school'])&& ($detail['school']==2)){echo  'selected';}?>>研究生</option>
+                                                         <option value="3" label="本科" <?php if(isset($detail['school'])&& ($detail['school']==3)){echo  'selected';}?>>本科</option>
+                                                         <option value="4" label="专科" <?php if(isset($detail['school'])&& ($detail['school']==4)){echo  'selected';}?>>专科</option>
+                                                         <option value="5" label="高中及以下" <?php if(isset($detail['school'])&& ($detail['school']==5)){echo  'selected';}?>>高中及以下</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="righticon" class="col-sm-3 control-label">婚姻状况<span class="required">*</span></label>
+                                       <div class="col-sm-6">
+                                                <div class="radio radio-custom radio-inline radio-primary">
+                                                    <input type="radio" id="radioCustom9" name="merry" value="1" <?php if(isset($detail['merry']) && $detail['merry']==1 ){echo 'checked';}?>
+                                                      <?php if(!isset($detail['merry'])){echo 'checked';}?>
+                                                    />
+                                                    <label for="radioCustom9">未婚</label>
+                                                    </div>
+                                                <div class="radio radio-custom radio-inline radio-primary">
+                                                    <input type="radio" id="radioCustom10" name="merry" value="2" <?php if(isset($detail['merry']) && $detail['merry']==2 ){echo 'checked';}?>
+                                                    />
+                                                    <label for="radioCustom10">已婚</label>
+                                                  </div>  
+                                                  <div class="radio radio-custom radio-inline radio-primary">
+                                                    <input type="radio" id="radioCustom11" name="merry" value="3" <?php if(isset($detail['merry']) && $detail['merry']==3 ){echo 'checked';}?>
+
+
+                                                    />
+                                                    <label for="radioCustom11">离异</label>
+                                                  </div>    
+                                                
+                                        </div>
+                                                
+                                            </div>
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">病情描述<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="context" name="context" value="<?php if(isset($detail['context']))echo  $detail['context'];?>" required>
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">主症状描述<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="describe" name="describe" value="<?php if(isset($detail['describe']))echo  $detail['describe'];?>" required>
+                                            </div>
+                                        </div>
+                                       <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">个人史/生活习惯<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="person" name="person" value="<?php if(isset($detail['person']))echo  $detail['person'];?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">现在使用药物</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="now_medicines" name="now_medicines" value="<?php if(isset($detail['now_medicines']))echo  $detail['now_medicines'];?>" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">过去疾病史</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="before" name="before" value="<?php if(isset($detail['before']))echo  $detail['before'];?>" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">月经史</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="menses" name="menses" value="<?php if(isset($detail['menses']))echo  $detail['menses'];?>" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">家族疾病史</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="family" name="family" value="<?php if(isset($detail['family']))echo  $detail['family'];?>" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+         {include file="Index/right"/}
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+
+</body>
+
+ {include file="Index/footer"/}

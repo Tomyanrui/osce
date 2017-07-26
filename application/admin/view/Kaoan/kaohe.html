@@ -1,0 +1,313 @@
+{include file="Index/top"/}
+<link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script>
+var w,h,className;
+      function getSrceenWH(){
+        w = $(window).width();
+        h = $(window).height();
+        $('#dialogBg').width(w).height(h);
+      }
+
+      window.onresize = function(){
+        getSrceenWH();
+      }
+      $(window).resize();
+
+      $(function(){
+        getSrceenWH();
+
+        //显示弹框
+        $(".biaozhun").click(function(){
+            className = $(this).attr('class');
+            $('#dialogBg').fadeIn(300);
+            $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+         
+        });
+       
+        //关闭弹窗
+        $('.claseDialogBtn').click(function(){
+            $('#dialogBg').fadeOut(300,function(){
+                $('#dialog').addClass('bounceOutUp').fadeOut();
+            });
+        });
+      });
+       function editscore(standardId){
+           
+
+            $.getJSON("{:url('Kaoan/editgradescore')}",{standardId:standardId},function(data){
+               info=JSON.parse(data);
+               if(info.Id==''){
+                alert('异常错误');
+                return false;
+                }
+               className = $(this).attr('class');
+               $('#dialogBg').fadeIn(300);
+               $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+               $('#describe').val(info.describe);
+               $('#min').val(info.min);
+               $('#max').val(info.max);
+               $('#standardId').val(info.Id);
+              
+
+            });
+        }
+        function editcate(assessmentId){
+           
+
+            $.getJSON("{:url('Kaoan/editgradecate')}",{assessmentId:assessmentId},function(data){
+               info=JSON.parse(data);
+               if(info.Id==''){
+                alert('异常错误');
+                return false;
+                }
+               className = $(this).attr('class');
+               $('#dialogB').fadeIn(300);
+               $('#dialo').removeAttr('class').addClass('animated '+className+'').fadeIn();
+              
+               $('#name').val(info.name);
+               $('#assessmentId').val(info.Id);
+              
+              
+
+            });
+        }
+
+</script>
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理 </a></li>
+                        <li><a>考核表</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                 
+                      <h4 class="section-subtitle">
+                      <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                        <?php if(isset($bianji) && ($bianji==1)){?>
+                   <a class="btn btn-wide " href="javascript:;" id="btn6">添加评分项</a>
+                   <a class="btn btn-wide biaozhun" href="javascript:;" >添加评分标准</a>
+                      <?php }?>
+                    </h4>
+                   
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>项目</th>
+                                        <th >
+                                        	<table style="width:100%">
+                                        		<tr><th colspan='<?php echo count($standardInfo);?>' style="text-align:center">评量考生</th></tr>
+                                                
+                                                <tr>
+                                                   {volist name="standardInfo" id="v"}
+                                                    <td>{$v.describe} 
+                                                    <?php if(isset($bianji) && ($bianji==1)){?>
+                                                    <a href="javascript:;" onclick="editscore({$v.Id});">编辑</a>&nbsp; &nbsp;&nbsp;<a href="javascript:;" onclick="delscore({$v.Id});">删除</a>
+                                                     <?php }?>
+                                                    </td>
+                                                   {/volist}
+                                                </tr>
+                                                <tr>
+                                                   {volist name="standardInfo" id="v"}
+                                                    <td>{$v.min}分 -  {$v.max}分</td>
+                                                   {/volist}
+                                                </tr>
+                                        	</table>
+                                        </th>
+                                       
+
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                   {volist name="cateInfo" id="vo" key="k"}
+                                    <tr>
+                                        <td>{$k}&nbsp;
+                                         <?php if(isset($bianji) && ($bianji==1)){?>
+                                        <a href="javascript:;" onclick="editcate({$vo.Id});">编辑</a>&nbsp; &nbsp;&nbsp;<a href="javascript:;" onclick="delcate({$vo.Id});">删除</a>
+                                        <?php }?>
+                                        </td>
+                                        <td>{$vo.name}</td>
+                                        <td>
+                                        <table style="width:100%">
+                                        <tr>
+                                          {volist name="standardInfo" id="v"}
+                                         <td><input name="score" value="" type="checkbox" style="-webkit-appearance: checkbox;"/></td>
+                                         {/volist}
+                                       </tr>
+                                         </table>
+                                       </td>
+                                    </tr>
+                                   {/volist}
+                                    
+                                    
+                                    </tbody>
+                                </table>
+                                 <div id="dialogBg"></div>
+                <div id="dialog" class="animated" style="width:325px;height:270px;">
+                    <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                    <div class="dialogTop">
+                        <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                    </div>
+                    <form action="{:url('Kaoan/addgradescore')}" method="post" id="editForm12" onSubmit="return checkRight();">
+                        <ul class="editInfos">
+                        <?php if(isset($stationId)){?>
+                  <input type="hidden" name="stationId" value="{$stationId}" id="stationId"/>
+                        <?php }?>
+                 
+                            <li><label><font color="#ff0000">* </font>描&nbsp;&nbsp;&nbsp;述：<input type="text" name="describe" required value="" class="ipt" id="describe"/></label></li>
+                            <li><label><font color="#ff0000">* </font>最少分：<input type="text" name="min" required id="min" class="ipt" onKeyUp="if(this.value.length>1){this.value=this.value.substr(0,1)};this.value=this.value.replace(/[^\d]/g,'');"/></label></li>
+                            <input name='standardId' id="standardId" type='hidden' />
+                            <li><label><font color="#ff0000">* </font>最高分：<input type="text" name="max" required id="max" class="ipt" onKeyUp="if(this.value.length>1){this.value=this.value.substr(0,1)};this.value=this.value.replace(/[^\d]/g,'');"/></label></li>
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div>
+                   <div id="dialogB"></div>
+       <div id="dialo" class="animated" style="width:350px;height:215px;">
+         <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+         <div class="dialogTop">
+           <a href="javascript:;" class="claseDialogBtn">关闭</a>
+         </div>
+         <form action="{:url('Kaoan/addgradecate')}" method="post" id="editForm" >
+           <ul class="editInfos" style="padding: 5px 0;">
+         
+             <li><label><font color="#ff0000">* </font>项目：<input type="text" name="name" required value="" class="ipt" id="name"/></label></li>
+              <input name='assessmentId' id="assessmentId" type='hidden' />
+                     <?php if(isset($stationId)){?>
+                  <input type="hidden" name="stationId" value="{$stationId}" id="stationId"/>
+                        <?php }?>
+            
+             <li style="margin-top:5px"><input type="submit" value="确认提交" class="submitBtn" /></li>
+           </ul>
+        </form> 
+       </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {include file="Index/alert"/}
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+
+<script src="__PUBLIC__/vendor/data-table/media/js/dataTables.bootstrap.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/tables/data-tables.js"></script>
+
+<script>
+function delscore(scoreId){
+         console.log(scoreId);
+
+        $.getJSON("{:url('Kaoan/delscore')}",{Id:scoreId},function(data){
+
+         if(data==3){
+           var message='您不是此考站前期工作人员，不得删除';
+         }else if(data==1){
+           var message='删除成功';
+          }else if(data==5){
+            var message='已归档，不得改动';
+           }else if(data==4){
+            var message='没有权限';
+           }else{
+             var message='删除失败';
+           }
+          alert(message);
+          window.location.reload();
+        });
+}
+function delcate(asessmentId){
+         console.log(asessmentId);
+        $.getJSON("{:url('Kaoan/delcate')}",{Id:asessmentId},function(data){
+
+         if(data==3){
+           var message='您不是此考站前期工作人员，不得删除';
+         }else if(data==1){
+           var message='删除成功';
+          }else if(data==5){
+            var message='已归档，不得改动';
+           }else if(data==4){
+            var message='没有权限';
+           }else{
+             var message='删除失败';
+           }
+          alert(message);
+          window.location.reload();
+        });
+}
+$('#btn6').click(function(){
+          className = $(this).attr('class');
+          $('#dialogB').fadeIn(300);
+          $('#dialo').removeAttr('class').addClass('animated '+className+'').fadeIn();
+        });
+//关闭弹窗
+$('.claseDialogBtn').click(function(){
+    $('#dialogB').fadeOut(300,function(){
+    $('#dialo').addClass('bounceOutUp').fadeOut();
+    });
+  });
+function checkRight(){
+  
+   var min=$("#min").val();
+   var max=$("#max").val();
+   var stationId=$("#stationId").val();
+   var standardId=$("#standardId").val();
+   var flag=true;
+   
+   $.ajax({
+    async:false,
+    url:"{:url('Kaoan/checkRight')}",
+    type:"GET",
+    data:{stationId:stationId,min:min,max:max,standardId:standardId},
+    success:function(data){
+          if(data==1){
+               alert('数据异常');
+               return flag=false;
+          }else if(data==3){
+                alert('最小值在不能在已有分数区间内');
+                return flag=false;
+          }else if(data==4){
+                alert('最大值在不能在已有分数区间内');
+                return flag=false;
+          }else if(data==2){
+                
+                return flag=true;
+          }
+    }
+  })
+   if(flag==false){
+         return false;
+      }
+  
+         
+     
+
+}
+     
+</script>
+
+</body>
+
+</html>

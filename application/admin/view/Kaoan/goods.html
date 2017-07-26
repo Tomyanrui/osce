@@ -1,0 +1,191 @@
+{include file="Index/top"/}
+<link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script>
+var w,h,className;
+      function getSrceenWH(){
+        w = $(window).width();
+        h = $(window).height();
+        $('#dialogBg').width(w).height(h);
+      }
+
+      window.onresize = function(){
+        getSrceenWH();
+      }
+      $(window).resize();
+
+      $(function(){
+        getSrceenWH();
+
+        //显示弹框
+        $(".addgoods").click(function(){
+            className = $(this).attr('class');
+            $('#dialogBg').fadeIn(300);
+            $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+         
+        });
+       
+        //关闭弹窗
+        $('.claseDialogBtn').click(function(){
+            $('#dialogBg').fadeOut(300,function(){
+                $('#dialog').addClass('bounceOutUp').fadeOut();
+            });
+        });
+      });
+       function editgoods(goodsId){
+           
+
+            $.getJSON("{:url('Kaoan/editgoods')}",{goodsId:goodsId},function(data){
+               info=JSON.parse(data);
+               if(info.Id==''){
+                alert('异常错误');
+                return false;
+                }
+               className = $(this).attr('class');
+               $('#dialogBg').fadeIn(300);
+               $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+               $('#describe').val(info.describe);
+               $('#number').val(info.number);
+               $('#name').val(info.name);
+               var input="<input name='goodsId' value='"+info.Id+"' type='hidden' />";
+               $('#name').append(input);
+
+            });
+        }
+        
+
+</script>
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Kaoan/station')}.?caseId={$caseId}">考站列表 </a></li>
+                        <li><a>物品准备</a></li>
+                        {if condition="($type==1)"}
+                        <li><a>考生设备</a></li>
+                        {else/}
+                        <li><a>考站设备</a></li>
+                        {/if}
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                     <h4 class="section-subtitle">
+                        <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                         {if condition="(role()==1)"}
+                        <a class="btn btn-wide  addgoods" href="javascript:;">添加</a>
+                        {/if}
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>物品</th>
+                                        <th>数量</th>
+                                        <th>备注</th>
+                                        {if condition="(role()==1)"}
+                                        <th>操作</th>
+                                        {/if}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="goods" key="k" id="vo"}
+                                    <tr>
+                                    	<td>{$k}</td>
+                                    	<td>{$vo.name}</td>
+                                    	<td>{$vo.number}件</td>
+                                    	<td>{$vo.describe|default="未知"}</td>
+                                    	{if condition="(role()==1)"}
+                                    	<td><a href="javascript:;" onclick="editgoods({$vo.Id})">编辑</a>&nbsp;&nbsp;&nbsp;
+                                         
+                                        <a href="javascript:;" data-target="#warning-modal" data-toggle="modal" onclick="del({$vo.Id})">删除</a>
+                                        </td>
+                                        {/if}
+                                    </tr>
+                                    {/volist}
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                             <div id="dialogBg"></div>
+                           <div id="dialog" class="animated" style="width:350px;height:270px;">
+                             <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                             <div class="dialogTop">
+                             <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                           </div>
+                            <form action="{:url('Kaoan/goodsAdd')}" method="post" id="editForm3">
+                               <ul class="editInfos">
+                               <?php if(isset($stationId)){?>
+                               <input type="hidden" name="stationId" value="{$stationId}" id="stationId"/>
+                               <?php }?>
+                                <?php if(isset($type)){?>
+                               <input type="hidden" name="type" value="{$type}" id="type"/>
+                               <?php }?>
+                            <li><label><font color="#ff0000">* </font>物&nbsp;&nbsp;&nbsp;品：
+                            <input type="text" name="name" required id="name" class="ipt"/>
+                            </label></li>
+                            <li><label><font color="#ff0000">* </font>数&nbsp;&nbsp;&nbsp;量：<input type="text" name="number" required id="number" class="ipt" onKeyUp="if(this.value.length>1){this.value=this.value.substr(0,1)};this.value=this.value.replace(/[^\d]/g,'');"/></label></li>
+                            <li><label><font color="#ff0000">* </font>备&nbsp;&nbsp;&nbsp;注：
+                            <input type="text" name="describe" required id="describe" class="ipt"/>
+                            </label></li>
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {include file="Index/alert"/}
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/jquery.dataTables.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/dataTables.bootstrap.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/tables/data-tables.js"></script>
+<script>
+function del(id){
+    $("button[name='ok']").click(function(){
+
+       $.getJSON("{:url('Kaoan/delgoods')}",{goodsId:id},function(data){
+       
+         
+          if(data==1){
+           var message='删除成功';
+          }else if(data==5){
+            var message='已归档，不得改动';
+           }else if(data==4){
+            var message='没有权限';
+           }else if(data==7){
+            var message='参数错误';
+           }else{
+             var message='删除失败';
+           }
+          alert(message);
+          window.location.reload();
+        });
+
+    });
+}
+</script>
+</body>
+
+</html>

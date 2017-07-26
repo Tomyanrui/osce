@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en" class="fixed accounts sign-in">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Login</title>
+    <link rel="apple-touch-icon" sizes="120x120" href="__PUBLIC__/favicon/apple-icon-120x120.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="__PUBLIC__/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="__PUBLIC__/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="__PUBLIC__/favicon/favicon-16x16.png">
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/vendor/animate.css/animate.css">
+    <link rel="stylesheet" href="__PUBLIC__/stylesheets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/tan/css/xcConfirm.css"/>
+        <script src="__PUBLIC__/tan/js/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script>
+        <script src="__PUBLIC__/tan/js/xcConfirm.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+     
+
+
+<div class="wrap">
+    <div class="page-body animated slideInDown">
+        <div class="logo">
+           <div style="width:100%;height:70px;line-height:70px;text-align:center;font-size:50px;"> OSCE</div>
+        </div>
+        <div class="box">
+            <div class="panel mb-none">
+                <div class="panel-content bg-scale-0">
+                    <form action="" method="post" id="form" onSubmit="return check();">
+                        <div class="form-group mt-md">
+                            <span class="input-with-icon">
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="用户名/手机号">
+                                    <i class="fa fa-envelope"></i>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                                <span class="input-with-icon">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="密码">
+                                        <i class="fa fa-key"></i>
+                                    </span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-custom checkbox-primary">
+                                <input type="checkbox" id="remember-me" value="option1" checked>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a href="javascript:;" class="btn btn-primary btn-block" onclick="submit();">Sign in</a>
+                        </div>
+                        <div class="form-group text-center">
+                            <a href="pages_forgot-password.html">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+<script type="text/javascript">
+    function submit(){
+      $("#form").submit();
+    }
+    function check(){
+        var name=$("#username").val();
+        var password=$("#password").val();
+        if(name==''){
+            var txt=  "请输入用户名或手机号";
+            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
+            return false;
+        }
+        if(password==''){
+            var txt=  "请输入密码";
+            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+{include file="Index/top"/}
+
+<body>
+<div class="wrap">
+    {include file="Index/header"/}
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">用户中心</a></li>
+                        <li><a>添加用户</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInUp">
+               
+                <div class="col-sm-12">
+                    <h4 class="section-subtitle">
+                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="inline-validation" class="form-horizontal form-stripe" action="" method="post">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">用户名<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="name" name="username" value="<?php if(isset($user['username']))echo  $user['username'];?>" required>
+                                            </div>
+                                        </div>
+                                       <?php if(isset($user['id'])){?>
+                                        <input type="hidden" name="id" value="{$user['id']}"/>
+                                        <?php }?>
+                                        <div class="form-group">
+                                            <label for="mobile" class="col-sm-3 control-label">手机号<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="mobile" class="form-control" id="mobile" name="phone" value="<?php if(isset($user['phone']))echo  $user['phone'];?>" required>
+                                            </div>
+                                        </div>
+                                        
+                                      
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">员工编号<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="ynumber" name="employeeNumber" value="<?php if(isset($user['employeeNumber']))echo  $user['employeeNumber'];?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">科室<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select name="departmentId" id="select2-example-basic" class="form-control" style="width: 100%">
+                                                        <option value="" label="请选择">请选择</option>
+                                                        {volist name="department" id="vo"}
+                                                        <option value="{$vo.Id}" label="{$vo.name}" <?php if(isset($user['departmentId'])&& ($user['departmentId']==$vo['Id'])){echo  'selected';}?> >{$vo.name}</option>
+                                                        {/volist}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+         {include file="Index/right"/}
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+
+</body>
+
+ {include file="Index/footer"/}

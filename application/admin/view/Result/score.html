@@ -1,0 +1,165 @@
+{include file="Index/top"/}
+<link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
+<script src="https://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script>
+var w,h,className;
+      function getSrceenWH(){
+        w = $(window).width();
+        h = $(window).height();
+        $('#dialogBg').width(w).height(h);
+      }
+
+      window.onresize = function(){
+        getSrceenWH();
+      }
+      $(window).resize();
+
+      $(function(){
+        getSrceenWH();
+
+        //显示弹框
+        $(".changeResult").click(function(){
+            className = $(this).attr('class');
+            $('#dialogBg').fadeIn(300);
+            $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+         
+        });
+       
+        //关闭弹窗
+        $('.claseDialogBtn').click(function(){
+            $('#dialogBg').fadeOut(300,function(){
+                $('#dialog').addClass('bounceOutUp').fadeOut();
+            });
+        });
+      });
+       function changePoints(resultId){
+           
+             $("#resultId").val(resultId);
+           
+        }
+      
+
+</script>
+<style>
+    .quator{display:block;width:25%;float:left;font-size: initial;}
+</style>
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Result/lst')}">评分结果 </a></li>
+                        <li><a href="{:url('Result/station')}?caseId={$caseInfo['Id']}">考站列表</a></li>
+                        <li><a>{$stationInfo['name']}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                   <h4 class="section-subtitle">
+                        <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                        <span class="quator">考案名称：{$caseInfo.name}</span>
+                        <span class="quator">考案编号：{$caseInfo.number}</span>
+                        <span class="quator">测验核心：{$stationInfo.text_core}</span>
+                        <span class="quator">测验日期：{$caseInfo.textTime}</span>
+                        </div>
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table width="100%">
+                                    
+                                    <tr>
+                                     <td width="40%">
+                                         <table  class="data-table table table-striped nowrap table-hover" cellspacing="0" >
+                                             <tr><td>考生编号</td></tr>
+                                             <tr><td>考生姓名</td></tr>
+                                              <tbody>
+                                             {volist name="cateInfo" id="vo"}
+                                             <tr>
+                                                 
+                                                  <td>{$vo.name}</td>
+                                                 
+                                             </tr>
+                                             {/volist}
+                                              </tbody>
+                                         </table>
+                                     </td> 
+                                     {volist name="resultInfo" id="v"}
+                                      <td>
+                                          <table  class="data-table table table-striped nowrap table-hover" cellspacing="0" >
+                                             <tr><td>{$v.employeeNumber}</td></tr>
+                                             <tr><td>{$v.username}</td></tr>
+                                              <tbody>
+
+                                             {volist name="v['result']" id="vv"}
+                                             <tr>
+                                                 
+                                                  <td><?php if(is_numeric($vv['result'])){?>
+                                                  {$vv.result}
+                                                  <?php }else{?>
+                                                  无
+                                                  <?php }?>
+                                                  <?php if(($stationInfo['examier']==session('userId')) || role()==1){
+                                                                if(is_numeric($vv['result'])){
+                                                  ?>
+                                                  &nbsp;&nbsp;&nbsp;<a href="javascript:;" onclick="changePoints({$vv.Id});" class="changeResult">修改</a><?php }}?>
+                                              
+                                                  </td>
+                                                 
+                                             </tr>
+                                             {/volist}
+                                              </tbody>
+                                         </table>
+                                      </td>
+                                     {/volist}  
+                                    </tr>
+                                </table>
+                            </div>
+                                                 <div id="dialogBg"></div>
+                <div id="dialog" class="animated" style="width:325px;height:270px;">
+                    <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                    <div class="dialogTop">
+                        <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                    </div>
+                    <form action="{:url('Result/changeResult')}" method="post" id="editForm12">
+                        <ul class="editInfos">
+                  
+                            {volist name="standardInfo" id="vv"}
+                            <li><label><font color="#ff0000">* </font>{$vv.describe} : &nbsp;&nbsp;&nbsp;<span>{$vv.min}分--{$vv.max}分</span></label></li>
+                            {/volist}
+                            <li><label><input type="text" name="result" required id="result" class="ipt" onKeyUp="if(this.value.length>1){this.value=this.value.substr(0,1)};this.value=this.value.replace(/[^\d]/g,'');"/>
+                            <input name='resultId' id="resultId" type='hidden' />
+                            <input name='stationId' id="stationtId" type='hidden' value="{$stationInfo['Id']}"/>
+                            </label></li>
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+{include file="Index/top"/}
+
+<body>
+<div class="wrap">
+    {include file="Index/header"/}
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">用户中心</a></li>
+                        <li><a>添加科室</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInUp">
+               
+                <div class="col-sm-12">
+                    <h4 class="section-subtitle">
+                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="department" class="form-horizontal form-stripe" action="" method="post">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">科室名称<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="name" name="name" value="<?php if(isset($department['name']))echo  $department['name'];?>" required>
+                                            </div>
+                                        </div>
+                                        <?php if(isset($department['Id'])){?>
+                                        <input type="hidden" name="Id" value="{$department['Id']}"/>
+                                        <?php }?>
+                                        <div class="form-group">
+                                            <label for="mobile" class="col-sm-3 control-label">负责人<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="directior" name="directior" value="<?php if(isset($department['directior']))echo  $department['directior'];?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mobile" class="col-sm-3 control-label">手机号码<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="mobile" class="form-control" id="mobile" name="phone" value="<?php if(isset($department['phone']))echo  $department['phone'];?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mobile" class="col-sm-3 control-label">科室简介<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                            <textarea class="form-control" rows="3" id="textareaMaxLength" placeholder="请输入科室简介" maxlength="200" name="infomation" required><?php if(isset($department['infomation']))echo  $department['infomation'];?></textarea>
+                                            </div>
+                                        </div>
+                                      
+                                        
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-primary">提交</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+         {include file="Index/right"/}
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+
+</body>
+
+ {include file="Index/footer"/}

@@ -1,0 +1,105 @@
+{include file="Index/top"/}
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理 </a></li>
+                        <li><a>考核表</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                 
+                      <h4 class="section-subtitle">
+                      <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                 
+                    </h4>
+                   
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>项目</th>
+                                        <th >
+                                        	<table style="width:100%">
+                                        		<tr><th colspan='<?php echo count($standardInfo);?>' style="text-align:center">评量考生</th></tr>
+                                                
+                                                <tr>
+                                                   {volist name="standardInfo" id="v"}
+                                                    <td>{$v.describe} 
+                                                
+                                                    </td>
+                                                   {/volist}
+                                                </tr>
+                                                <tr>
+                                                   {volist name="standardInfo" id="v"}
+                                                    <td>{$v.min}分 -  {$v.max}分</td>
+                                                   {/volist}
+                                                </tr>
+                                        	</table>
+                                        </th>
+                                       
+
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                   {volist name="cateInfo" id="vo" key="k"}
+                                    <tr>
+                                        <td>{$k}&nbsp;
+                                       
+                                        </td>
+                                        <td>{$vo.name}</td>
+                                        <td>
+                                        <table style="width:100%">
+                                        <tr>
+                                          {volist name="standardInfo" id="v"}
+                                         <td><input name="score" value="" type="checkbox" style="-webkit-appearance: checkbox;"/></td>
+                                         {/volist}
+                                       </tr>
+                                         </table>
+                                       </td>
+                                    </tr>
+                                   {/volist}
+                                    
+                                    
+                                    </tbody>
+                                </table>
+          
+  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+
+<script src="__PUBLIC__/vendor/data-table/media/js/dataTables.bootstrap.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/tables/data-tables.js"></script>
+
+
+
+</body>
+
+</html>

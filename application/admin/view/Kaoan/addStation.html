@@ -1,0 +1,256 @@
+{include file="Index/top"/}
+<link rel="stylesheet" href="__PUBLIC__/vendor/bootstrap_date-picker/css/bootstrap-datepicker3.min.css">
+<link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+   var w,h,className;
+      function getSrceenWH(){
+        w = $(window).width();
+        h = $(window).height();
+        $('#dialogBg').width(w).height(h);
+      }
+
+      window.onresize = function(){
+        getSrceenWH();
+      }
+      $(window).resize();
+
+      $(function(){
+        getSrceenWH();
+
+        //显示弹框
+        $(".addStudent").click(function(){
+            className = $(this).attr('class');
+            $('#dialogBg').fadeIn(300);
+            $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+         
+        });
+       
+        //关闭弹窗
+        $('.claseDialogBtn').click(function(){
+            $('#dialogBg').fadeOut(300,function(){
+                $('#dialog').addClass('bounceOutUp').fadeOut();
+            });
+        });
+      }); 
+      function check(){
+         var phone=$("#phone").val();
+         var name=$("#name").val();
+         var number=$("#number").val();
+         var stationId=$("#stationId").val();
+          var flag=true;
+         if(!(/^1[34578]\d{9}$/.test(phone))){
+           alert("手机号码格式有误，请重填");
+           return flag=false;
+          }
+         var flag=true;
+         $.ajax({
+          async:false,
+          url:"{:url('Kaoan/addStudent')}",
+          type:"GET",
+          data:{phone:phone,name:name,stationId:stationId,employeeNumber:number},
+          success:function(data){
+             if(data==7){
+               alert('数据异常');
+               return flag=false;
+              }else if(data==3){
+                alert('该手机号码已经被注册');
+                return flag=false;
+              }else if(data==6){
+                alert('没有相关权限');
+                return flag=false;
+              }else if(data==5){
+                alert('该考站已归档');
+                return flag=false;
+              }else if(data==2){
+                alert('添加成功');
+                return flag=true;
+              }
+          }
+       })
+       if(flag==false){
+         return false;
+      }else{
+          window.history.go(-1);
+      }
+
+       }
+</script>
+<style>
+    .min-max{
+        width:5%;float:left;
+    }
+</style>
+<body>
+<div class="wrap">
+    {include file="Index/header"/}
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理</a></li>
+                        <li><a>添加考站</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInUp">
+               <div class="col-sm-12">
+                    <h4 class="section-subtitle">
+                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="stationAdd" class="form-horizontal form-stripe" action="" method="post" >
+                                        {if condition="(role()==1)"}
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">考站名称<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="name" name="name" value="<?php if(isset($station['name']))echo  $station['name'];?>" >
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                           <label for="mobile" class="col-sm-3 control-label">考站位置<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                
+                                                <input type="text" class="form-control" id="location" placeholder="考站位置"  name="location" value="<?php if(isset($station['location']))echo  $station['location'];?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                           <label for="mobile" class="col-sm-3 control-label">测验核心<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                
+                                                <input type="text" class="form-control" id="text_core" placeholder="测验核心"  name="text_core" value="<?php if(isset($station['text_core']))echo  $station['text_core'];?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">前期作业人员<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select name="teach" id="teach" class="form-control" style="width: 100%">
+                                                        <option value="" label="请选择">请选择</option>
+                                                        {volist name="user" id="vo"}
+                                                        <option value="{$vo.id}" label="{$vo.username}" <?php if(isset($station['teach'])&& ($station['teach']==$vo['id'])){echo  'selected';}?> >{$vo.username}</option>
+                                                        {/volist}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">中期评分人员(考官)<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select name="examier" id="examier" class="form-control" style="width:100%">
+                                                        <option value="" label="请选择">请选择</option>
+                                                        {volist name="user" id="vo"}
+                                                        <option value="{$vo.id}" label="{$vo.username}" <?php if(isset($station['examier'])&& ($station['examier']==$vo['id'])){echo  'selected';}?> >{$vo.username}</option>
+                                                        {/volist}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">SP设定<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select name="sper" id="sper" class="form-control" style="width:100%">
+                                                        <option value="" label="模拟假人">模拟假人</option>
+                                                        {volist name="user" id="vo"}
+                                                        <option value="{$vo.id}" label="{$vo.username}" <?php if(isset($station['sper'])&& ($station['sper']==$vo['id'])){echo  'selected';}?> >{$vo.username}</option>
+                                                        {/volist}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        {/if}
+                                        <?php if(isset($station['Id'])){?>
+                                        <input type="hidden" name="Id" value="{$station['Id']}"/>
+                                        <?php }?>
+                                        {if condition="(role()==2)"}
+                                        
+                                        
+                                        
+                                        <div class="form-group">
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">考生管理<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <select id="id_select" class="selectpicker bla bla bli" multiple data-live-search="true" name="examinee[]">
+                                                   {volist name="shixi" id="vo"}
+                                                   <option value="{$vo['id']}" <?php if(isset($station['examinee'])&& in_array($vo['id'],explode(',',$station['examinee']))){echo 'selected';}?>>{$vo.username}</option>
+                                                   {/volist}
+                                                   
+                                                   </select>
+
+                                            </div>
+                                            <a style="float:left;" href="javascript:;"  class="addStudent">添加考生</a>
+                                        </div>
+                                        
+                                        {/if}
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-primary" >提交</button>
+                                            </div>
+                                        </div>
+                                    </form>
+            <div id="dialogBg"></div>
+                <div id="dialog" class="animated" style="width:325px;height:270px;">
+                    <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                    <div class="dialogTop">
+                        <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                    </div>
+                    <form action="{:url('Kaoan/addStudent')}" method="post" id="editForm" onSubmit="return check();">
+                        <ul class="editInfos">
+                   <?php if(isset($station['Id'])){?>
+                                        <input type="hidden" name="stationId" value="{$station['Id']}" id="stationId"/>
+                                        <?php }?>
+                 
+                            <li><label><font color="#ff0000">* </font>姓名：<input type="text" name="name" required value="" class="ipt" id="name"/></label></li>
+                            <li><label><font color="#ff0000">* </font>手机：<input type="text" name="phone" required id="phone" class="ipt" /></label></li>
+                            <li><label><font color="#ff0000">* </font>工号：<input type="text" name="employeeNumber" required id="number" class="ipt" /></label></li>
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+         {include file="Index/right"/}
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap_max-lenght/bootstrap-maxlength.js"></script>
+<script src="__PUBLIC__/vendor/select2/js/select2.min.js"></script>
+<script src="__PUBLIC__/vendor/input-masked/inputmask.bundle.min.js"></script>
+<script src="__PUBLIC__/vendor/input-masked/phone-codes/phone.js"></script>
+<script src="__PUBLIC__/vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/forms/validation.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap_date-picker/js/bootstrap-datepicker.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap_time-picker/js/bootstrap-timepicker.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap_color-picker/js/bootstrap-colorpicker.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/forms/advanced.js"></script>
+<script type="text/javascript" src="__PUBLIC__/vendor/select2/js/bootstrap-select.js"></script>
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/vendor/select2/css/bootstrap-select.css">
+<script type="text/javascript">
+$(window).on('load', function () {
+
+ $('.selectpicker').selectpicker({
+                'selectedText': 'cat'
+            });
+});
+
+
+
+    
+      
+  
+  </script>
+</body>
+</html>
+

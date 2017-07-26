@@ -1,0 +1,79 @@
+{include file="Index/top"/}
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Result/station')}.?caseId={$caseId}">考站列表 </a></li>
+                        <li><a>物品准备</a></li>
+                        {if condition="($type==1)"}
+                        <li><a>考生设备</a></li>
+                        {else/}
+                        <li><a>考站设备</a></li>
+                        {/if}
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                     <h4 class="section-subtitle">
+                        <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                        
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>物品</th>
+                                        <th>数量</th>
+                                        <th>备注</th>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="goods" key="k" id="vo"}
+                                    <tr>
+                                    	<td>{$k}</td>
+                                    	<td>{$vo.name}</td>
+                                    	<td>{$vo.number}件</td>
+                                    	<td>{$vo.describe|default="未知"}</td>
+                                    
+                                    </tr>
+                                    {/volist}
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                             
+                   
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {include file="Index/alert"/}
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/jquery.dataTables.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/dataTables.bootstrap.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/tables/data-tables.js"></script>
+
+</body>
+
+</html>
