@@ -25,7 +25,7 @@ class Index extends controller
             $test = 1;
             //登录接口
           //  $aJson = array('Pack'=>'Login' , 'Interface'=>'login','Username'=>13552453024,'Password'=>'123456');
-            $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'caseList','userId'=>16,'token'=>'9eb7b6ecf6f36eddb8658c45eccf8111');
+            $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'caseList','userId'=>16,'token'=>'c16258f1ae3800c0e898dee8449e76a7');
            // $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'index','caseId'=>1);
            // $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'detail','stationId'=>3,'userId'=>2);
             // $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'doneInfo','stationId'=>2,'userId'=>2);

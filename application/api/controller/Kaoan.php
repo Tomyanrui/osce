@@ -34,7 +34,7 @@ class Kaoan extends controller
            }
            
         }
-
+        $caseInfo=array_values($caseInfo);
         if(empty($caseInfo)){
           echo  returnApiError('暂无相关考案信息');
           exit;
