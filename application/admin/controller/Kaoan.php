@@ -253,14 +253,12 @@ class Kaoan extends Admin
       }
       $cateInfo=db('case_assessment')->where('stationId',input('stationId'))->field('Id,name')->select();
       $standardInfo=db('assessment_standard')->where('stationId',input('stationId'))->field('Id,describe,min,max')->select();
-      $teach=db('case_station')->where('Id',input('stationId'))->value('teach');
-      if($teach==session('userId')){
+      $station=db('case_station')->where('Id',input('stationId'))->find();
+      
+      if($station['teach']==session('userId')){
         $this->assign('bianji',1);
       }
-
-      $this->assign('stationId',input('stationId'));
-      $this->assign('cateInfo',$cateInfo);
-      $this->assign('standardInfo',$standardInfo);
+      $this->assign(['stationId'=>input('stationId'),'cateInfo'=>$cateInfo,'standardInfo'=>$standardInfo,'employee'=>$station['employee']]);
       return $this->fetch();
     }
     //删除考站考核表评分标准
@@ -704,5 +702,73 @@ class Kaoan extends Admin
       return  json_encode(2);//可以添加，成功
       exit;
 
+    }
+    //教授选择已有考核表模板
+    public function chose(){
+      if(!input('stationId')){
+         return $this->error('数据异常');
+      }
+      $work_unitId=db('user')->where('id',session('userId'))->value('work_unitId');
+      $caseId=db('case_station')->where('Id',input('stationId'))->value('caseId');
+      $category=db('text_case')->where('id',$caseId)->value('category');
+      $caseInfo=db('text_case')->where('work_unitId',$work_unitId)->where('category',$category)->where('status',1)
+                ->field('Id')->select();
+      foreach ($caseInfo as $key => $value) {
+        $stationInfo[]=db('case_station')->where('caseId',$value['Id'])->field('Id,employee,text_core')->select();
+      }
+      foreach ($stationInfo as $key => $value) {
+        foreach ($value as $k => $v) {
+          $station[]=$v;
+        }
+      }
+      $this->assign(['station'=>$station,'caseId'=>$caseId,'stationId'=>input('stationId')]);
+      return $this->fetch();
+    }
+    //考核表复制
+    public function kcopy(){
+      if(!input('ystationId') && !input('bstationId')){
+         return $this->error('数据异常');
+      }
+      $employee=db('case_station')->where('Id',input('bstationId'))->value('employee');
+      $re=db('case_station')->where('Id',input('ystationId'))->update(['employee'=>$employee]);
+      $caseId=db('case_station')->where('Id',input('ystationId'))->value('caseId');
+      $standardInfo=db('assessment_standard')->where('stationId',input('bstationId'))->select();
+      foreach ($standardInfo as $key => $value) {
+        $insert_standard[$key]['describe']=$value['describe'];
+        $insert_standard[$key]['min']=$value['min'];
+        $insert_standard[$key]['max']=$value['max'];
+        $insert_standard[$key]['stationId']=input('ystationId');
+        $insert_standard[$key]['caseId']=$caseId;
+        $insert_standard[$key]['addTime']=date('Y-m-d H:i:s');
+
+      }
+      $assessmentInfo=db('case_assessment')->where('stationId',input('bstationId'))->select();
+      
+      foreach ($assessmentInfo as $key => $value) {
+        $insert_assessment[$key]['name']=$value['name'];
+       
+        $insert_assessment[$key]['stationId']=input('ystationId');
+        $insert_assessment[$key]['caseId']=$caseId;
+        $insert_assessment[$key]['addTime']=date('Y-m-d H:i:s');
+
+      }
+      $re1=db('assessment_standard')->insertAll($insert_standard);
+      $re2=db('case_assessment')->insertAll($insert_assessment);
+      if($re1 && $re2){
+         return $this->redirect('station',['caseId'=>$caseId]);
+         exit;
+      
+      }
+       return $this->error('异常错误');
+       exit;
+    }
+    //更新考核表名称
+    public function employee(){
+       if(!input('stationId') && !input('employee')){
+         return $this->error('数据异常');
+      }
+      db('case_station')->where('Id',input('stationId'))->update(['employee'=>input('employee')]);
+      return $this->redirect('kaohe',['stationId'=>input('stationId')]);
+      exit;
     }
 }

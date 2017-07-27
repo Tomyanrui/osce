@@ -81,17 +81,10 @@
                                         <th>中期打分人员</th>
                                          <th>SP</th>
                                         <th>测验核心</th>
-                                       
                                         <th>物品准备</th>
-                                     
-                                      
                                          <th>考案设计</th>
                                          <th>考核表设计</th>
-
-                                       
-                                          
-                                       
-                                        <th>操作</th>
+                                          <th>操作</th>
                                         
                                     </tr>
                                     </thead>
@@ -112,10 +105,10 @@
                                          <a href="{:url('Kaoan/goods?stationId='.$vo.Id.'&type=1')}">考生</a>
                                          </td>
                                     <td>  
-                                            {if condition="$vo.sheji neq 0"}已完成&nbsp;&nbsp;&nbsp;<a href="{:url('Kaoan/detail?detailId='.$vo.sheji)}">查看</a>{else/}未完成&nbsp;&nbsp;&nbsp;<a href="{:url('Kaoan/detail?stationId='.$vo.Id)}">添加</a>{/if}
+                                            {if condition="$vo.sheji neq 0"}已完成&nbsp;&nbsp;&nbsp;<a href="{:url('Kaoan/detail?detailId='.$vo.sheji)}">查看</a>{else/}未完成{/if}&nbsp;&nbsp;&nbsp;{if condition="(role()==2) && (!$vo.sheji) &&($vo.teach==session('userId'))"}<a href="{:url('Kaoan/detail?stationId='.$vo.Id)}">添加</a>{/if}
                                         </td>
                                          <td>
-                                             {if condition="$vo.kaohe eq 1"}已完成&nbsp;&nbsp;&nbsp;<a href="{:url('Kaoan/kaohe?stationId='.$vo.Id)}">查看</a>{else/}未完成&nbsp;&nbsp;&nbsp;<a href="{:url('Kaoan/kaohe?stationId='.$vo.Id)}">添加</a>{/if}
+                                             {if condition="$vo.kaohe eq 1"}已完成&nbsp;&nbsp;&nbsp;<a href="{:url('Kaoan/kaohe?stationId='.$vo.Id)}">查看</a>{else/}未完成{/if}&nbsp;&nbsp;&nbsp;{if condition="(role()==2) && ($vo.kaohe !=1) &&($vo.teach==session('userId'))"}<a href="{:url('Kaoan/chose?stationId='.$vo.Id)}">添加</a>{/if}
                                          </td>
                                          <td>
                                         {if condition="(role()==1)"}

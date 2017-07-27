@@ -1,0 +1,140 @@
+{include file="Index/top"/}
+<link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
+<script src="https://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script>
+var w,h,className;
+      function getSrceenWH(){
+        w = $(window).width();
+        h = $(window).height();
+        $('#dialogBg').width(w).height(h);
+      }
+
+      window.onresize = function(){
+        getSrceenWH();
+      }
+      $(window).resize();
+
+      $(function(){
+        getSrceenWH();
+
+        //显示弹框
+        $(".nameAdd").click(function(){
+            className = $(this).attr('class');
+            $('#dialogBg').fadeIn(300);
+            $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+         
+        });
+       
+        //关闭弹窗
+        $('.claseDialogBtn').click(function(){
+            $('#dialogBg').fadeOut(300,function(){
+                $('#dialog').addClass('bounceOutUp').fadeOut();
+            });
+        });
+      });
+      
+      
+
+</script>
+<body>
+<div class="wrap">
+   {include file="Index/header"/}
+
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('kaoan/lst')}">考案管理 </a></li>
+                        <li><a href="{:url('kaoan/station')}?caseId={$caseId}">考站列表</a></li>
+                        <li><a>考核表模板</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInRight">
+                <div class="col-sm-12">
+                
+                   <h4 class="section-subtitle">
+                
+                   <a class="btn btn-wide  btn-lighter-1" href="{:url('kaoan/station')}?caseId={$caseId}">返回</a>
+                   <a class="btn btn-wide  nameAdd" href="javascript:;">重新添加</a>
+                   </h4>
+                  
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="table-responsive">
+                                <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>考核表名称</th>
+                                        <th>测验核心</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="station" id="vo"}
+                                    <tr>
+                                        <td>{$vo.Id}</td>
+                                        <td>{$vo.employee}</td>
+                                        <td>{$vo.text_core}</td>
+                                        <td><a href="{:url('Kaoan/kaohe?stationId='.$vo.Id)}">预览</a>&nbsp;&nbsp;&nbsp;
+                                             <a href="{:url('Kaoan/kcopy?bstationId='.$vo.Id)}?ystationId={$stationId}" >设为考核表<a></td>
+                                        
+                                    </tr>
+                                    {/volist}
+                                    
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                                              <div id="dialogBg"></div>
+                <div id="dialog" class="animated" style="width:325px;height:200px;">
+                    <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                    <div class="dialogTop">
+                        <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                    </div>
+                    <form action="{:url('Kaoan/employee')}" method="post" id="editForm12" >
+                        <ul class="editInfos">
+                        <?php if(isset($stationId)){?>
+                  <input type="hidden" name="stationId" value="{$stationId}" id="stationId"/>
+                        <?php }?>
+                 
+                            <li><label><font color="#ff0000">* </font>考核表名称<input type="text" name="employee" required value="" class="ipt" id="describe"/></label></li>
+                            
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {include file="Index/alert"/}
+        </div>
+        {include file="Index/right"/}
+
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+<script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
+<script src="__PUBLIC__/javascripts/template-script.min.js"></script>
+<script src="__PUBLIC__/javascripts/template-init.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/jquery.dataTables.min.js"></script>
+<script src="__PUBLIC__/vendor/data-table/media/js/dataTables.bootstrap.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/tables/data-tables.js"></script>
+<script>
+function del(id){
+    $("button[name='ok']").click(function(){
+       url="{:url('Kaoan/delCase')}?caseId="+id;
+       window.location.href=url;
+
+    });
+}
+</script>
+</body>
+
+</html>

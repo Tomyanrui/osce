@@ -1,6 +1,6 @@
 {include file="Index/top"/}
 <link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
-<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="https://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
 <script>
 var w,h,className;
       function getSrceenWH(){
@@ -24,14 +24,16 @@ var w,h,className;
             $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
          
         });
+        
        
         //关闭弹窗
-        $('.claseDialogBtn').click(function(){
+        $('.claseDialogBtn').click(function(){  
             $('#dialogBg').fadeOut(300,function(){
                 $('#dialog').addClass('bounceOutUp').fadeOut();
             });
         });
       });
+      
        function editscore(standardId){
            
 
@@ -51,6 +53,13 @@ var w,h,className;
               
 
             });
+        }
+        function employeeAdd(){
+           className = $(this).attr('class');
+            $('#dialog').fadeIn(300);
+            $('#dial').removeAttr('class').addClass('animated '+className+'').fadeIn();
+           
+         
         }
         function editcate(assessmentId){
            
@@ -105,6 +114,9 @@ var w,h,className;
                             <div class="table-responsive">
                                 <table id="basic-table" class="data-table table table-striped nowrap table-hover" cellspacing="0" width="100%">
                                     <thead>
+                                    <tr>
+                                      <th colspan="3" style="text-align: center;"><span style="font-size:16px;">{$employee}</span> <?php if(isset($bianji) && ($bianji==1)){?>&nbsp; &nbsp;&nbsp;<a href="javascript:;"  onclick="employeeAdd();">编辑</a><?php }?></th>
+                                    </tr>
                                     <tr>
                                         <th>序号</th>
                                         <th>项目</th>
@@ -196,6 +208,26 @@ var w,h,className;
            </ul>
         </form> 
        </div>
+              <div id="dialog111"></div>
+                <div id="dial11" class="animated" style="width:325px;height:200px;">
+                    <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                    <div class="dialogTop">
+                        <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                    </div>
+                    <form action="{:url('Kaoan/employee')}" method="post" id="editForm13" >
+                        <ul class="editInfos">
+                        <?php if(isset($stationId)){?>
+                  <input type="hidden" name="stationId" value="{$stationId}" id="stationId"/>
+                        <?php }?>
+                 
+                            <li><label><font color="#ff0000">* </font>考核表名称
+                            <input type="text" name="employee" required value="<?php if(isset($employee))echo  $employee;?>" class="ipt" />
+                            </label></li>
+                            
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div> 
                             </div>
                         </div>
                     </div>
@@ -262,10 +294,22 @@ $('#btn6').click(function(){
           $('#dialogB').fadeIn(300);
           $('#dialo').removeAttr('class').addClass('animated '+className+'').fadeIn();
         });
+function employeeAdd(){
+           className = $(this).attr('class');
+            $('#dialog111').fadeIn(300);
+            $('#dial11').removeAttr('class').addClass('animated '+className+'').fadeIn();
+           
+         
+        };
 //关闭弹窗
 $('.claseDialogBtn').click(function(){
     $('#dialogB').fadeOut(300,function(){
     $('#dialo').addClass('bounceOutUp').fadeOut();
+    });
+  });
+$('.claseDialogBtn').click(function(){
+    $('#dialog111').fadeOut(300,function(){
+    $('#dial11').addClass('bounceOutUp').fadeOut();
     });
   });
 function checkRight(){
