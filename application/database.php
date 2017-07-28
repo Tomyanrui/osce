@@ -13,9 +13,9 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '',
+    'hostname'        => '',//什么鬼这是
     // 数据库名
-    'database'        => '',
+    'database'        => '',//git 用不熟啊
     // 用户名
     'username'        => '',
     // 密码
