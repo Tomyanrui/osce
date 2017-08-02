@@ -65,7 +65,8 @@ var w,h,className;
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Kaoan/station')}.?caseId={$caseId}">考站列表 </a></li>
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a href="{:url('Kaoan/station')}.?caseId={$caseId}">{$caseName}</a></li>
                         <li><a>物品准备</a></li>
                         {if condition="($type==1)"}
                         <li><a>考生设备</a></li>
@@ -78,7 +79,8 @@ var w,h,className;
             <div class="row animated fadeInRight">
                 <div class="col-sm-12">
                      <h4 class="section-subtitle">
-                        <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+              
+                        <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/station')}?caseId={$caseId}">返回</a>
                          {if condition="(role()==1)"}
                         <a class="btn btn-wide  addgoods" href="javascript:;">添加</a>
                         {/if}

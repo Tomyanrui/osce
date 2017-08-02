@@ -23,6 +23,18 @@
             className = $(this).attr('class');
             $('#dialogBg').fadeIn(300);
             $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+            $.getJSON("{:url('Kaoan/getDepartmentId')}",function(data){
+               info=JSON.parse(data);
+               if(info.Id==''){
+                alert('异常错误');
+                return false;
+                }
+              
+               $('#number').val(info.coding);
+              
+              
+
+            });
          
         });
        
@@ -41,6 +53,10 @@
           var flag=true;
          if(!(/^1[34578]\d{9}$/.test(phone))){
            alert("手机号码格式有误，请重填");
+           return flag=false;
+          }
+          if(!(/^[A-Z][A-Z0-9][0-9]+$/.test(number))){
+           alert("员工编号前俩位至少第一位为大写字母");
            return flag=false;
           }
          var flag=true;
@@ -62,10 +78,17 @@
               }else if(data==5){
                 alert('该考站已归档');
                 return flag=false;
+              }else if(data==4){
+                alert('员工编号不能重复');
+                return flag=false;
               }else if(data==2){
                 alert('添加成功');
                 return flag=true;
+              }else if(data==1){
+                alert('添加失败');
+                return flag=false;
               }
+
           }
        })
        if(flag==false){
@@ -90,7 +113,8 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理</a></li>
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a>{$caseName}</a></li>
                         <li><a>添加考站</a></li>
                     </ul>
                 </div>
@@ -98,7 +122,8 @@
             <div class="row animated fadeInUp">
                <div class="col-sm-12">
                     <h4 class="section-subtitle">
-                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                   <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/station')}?caseId={$caseId}">返回</a>
+
                     </h4>
                     <div class="panel">
                         <div class="panel-content">
@@ -150,7 +175,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="select2-example-basic" class="col-sm-3 control-label">SP设定<span class="required">*</span></label>
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">{$Think.session.roleName4}设定<span class="required">*</span></label>
                                             <div class="col-sm-6">
                                                 <select name="sper" id="sper" class="form-control" style="width:100%">
                                                         <option value="" label="模拟假人">模拟假人</option>
@@ -169,7 +194,7 @@
                                         
                                         
                                         <div class="form-group">
-                                            <label for="select2-example-basic" class="col-sm-3 control-label">考生管理<span class="required">*</span></label>
+                                            <label for="select2-example-basic" class="col-sm-3 control-label">{$Think.session.roleName3}管理<span class="required">*</span></label>
                                             <div class="col-sm-6">
                                                 <select id="id_select" class="selectpicker bla bla bli" multiple data-live-search="true" name="examinee[]">
                                                    {volist name="shixi" id="vo"}

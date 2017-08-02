@@ -1,5 +1,26 @@
 {include file="Index/top"/}
+<script src="https://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+ <script type="text/javascript">
+$(document).ready(function(){
+   $("#select2-example-basic").change(function(){
+       getcoding();
+    }); 
+   function getcoding(){
+     $.getJSON("{:url('User/getcoding')}",{departmentId:$("#select2-example-basic").val()},function(data){ 
+          info=JSON.parse(data);
+          
+          if(info.coding==undefined){
+                alert(info);
+                $('#ynumber').val('');
+                return false;
+          }
+          $('#ynumber').val(info.coding);
 
+     });
+   }
+   
+}); 
+</script>
 <body>
 <div class="wrap">
     {include file="Index/header"/}
@@ -40,14 +61,6 @@
                                                 <input type="mobile" class="form-control" id="mobile" name="phone" value="<?php if(isset($user['phone']))echo  $user['phone'];?>" required>
                                             </div>
                                         </div>
-                                        
-                                      
-                                        <div class="form-group">
-                                            <label for="age" class="col-sm-3 control-label">员工编号<span class="required">*</span></label>
-                                            <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="ynumber" name="employeeNumber" value="<?php if(isset($user['employeeNumber']))echo  $user['employeeNumber'];?>" required>
-                                            </div>
-                                        </div>
                                         <div class="form-group">
                                             <label for="select2-example-basic" class="col-sm-3 control-label">科室<span class="required">*</span></label>
                                             <div class="col-sm-6">
@@ -57,6 +70,12 @@
                                                         <option value="{$vo.Id}" label="{$vo.name}" <?php if(isset($user['departmentId'])&& ($user['departmentId']==$vo['Id'])){echo  'selected';}?> >{$vo.name}</option>
                                                         {/volist}
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age" class="col-sm-3 control-label">员工编号<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="ynumber" name="employeeNumber" value="<?php if(isset($user['employeeNumber']))echo  $user['employeeNumber'];?>"  required>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -81,3 +100,4 @@
 </body>
 
  {include file="Index/footer"/}
+

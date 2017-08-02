@@ -9,9 +9,9 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理</a></li>
-                        <li><a href="{:url('Kaoan/station')}?caseId={$caseId}">考站列表</a></li>
-                        <li><a>考站设计</a></li>
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a href="{:url('Kaoan/station')}?caseId={$caseId}">{$caseName}</a></li>
+                        <li><a>教案设计</a></li>
                     </ul>
                 </div>
             </div>
@@ -19,7 +19,8 @@
                
                 <div class="col-sm-12">
                     <h4 class="section-subtitle">
-                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                  
+                      <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/station')}?caseId={$caseId}">返回</a>
                     </h4>
                     <div class="panel">
                         <div class="panel-content">

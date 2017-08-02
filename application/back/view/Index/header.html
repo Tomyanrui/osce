@@ -19,7 +19,7 @@
                     </div>
                     <div class="user-info">
                         <span class="user-name">{$Think.session.username}</span>
-                        <span class="user-profile" style="text-align: center;">{if condition="(role()==1)"}{$Think.session.roleName1}{else/}{$Think.session.roleName2} {/if}</span>
+                        <span class="user-profile" style="text-align: center;">{if condition="(role()==1)"}学务处{elseif condition="(role()==2)"/}教授 {elseif condition="(role()==3)"/}实习生{elseif condition="(role()==4)"/}超级管理员{/if}</span>
                     </div>
                     <i class="fa fa-plus icon-open" aria-hidden="true"></i>
                     <i class="fa fa-minus icon-close" aria-hidden="true"></i>
@@ -27,10 +27,8 @@
                 <div class="user-options dropdown-box">
                     <div class="drop-content basic">
                         <ul>
-                            <li><a href="{:url('Login/changePassword')}"><i class="fa fa-cog" aria-hidden="true"></i> 修改密码</a></li>
-                             {if condition="(role()==1)"}
-                            <li><a href="{:url('Index/changeRole')}"><i class="fa fa-cog" aria-hidden="true"></i> 修改角色</a></li>
-                            {/if}
+                          
+                             <li><a href="{:url('Login/changePassword')}"><i class="fa fa-cog" aria-hidden="true"></i> 修改密码</a></li>
                             <li> <a href="{:url('Login/loginout')}"><i class="fa fa-lock" aria-hidden="true"></i> 退出</a></li>
                            
                         </ul>

@@ -1,5 +1,5 @@
 <?php
-namespace app\admin\controller;
+namespace app\back\controller;
 use think\Controller;
 use think\Db;
 use think\Request;
@@ -15,19 +15,13 @@ class Login extends controller
             if($userInfo['password']!=md5(input('post.password'))){
             	return $this->error('密码错误','login');
             }
-            if($userInfo['roleId']==3 || $userInfo['roleId']==4){//实习生或超级管理员
+            if($userInfo['roleId']!=4){
             	return $this->error('没有权限','login');
             }
             Db::name('user')->where('id',$userInfo['id'])->update(['lastLoginTime'=>date('Y-m-d H:i:s')]);
-            $work_unit=Db::name('work_unit')->find($userInfo['work_unitId']);
             session('userId',$userInfo['id']);
 			session('username',$userInfo['username']);
-            session('work_unitId',$userInfo['work_unitId']);
-			session('hospital',$work_unit['name']);
-            session('roleName1',$work_unit['roleName1']);
-            session('roleName2',$work_unit['roleName2']);
-            session('roleName3',$work_unit['roleName3']);
-            session('roleName4',$work_unit['roleName4']);
+			session('hospital',Db::name('work_unit')->where('Id',$userInfo['work_unitId'])->value('name'));
             return $this->redirect('Index/index');
         }
     	return $this->fetch('login');
@@ -68,8 +62,6 @@ class Login extends controller
            return $this->error('修改失败','changePassword');
            exit;
         }
-        $keshi=db('department')->where('work_unitId',session('work_unitId'))->field('Id,name')->select();
-        $this->assign(['keshi'=>$keshi]);
         return $this->fetch();
     }
      //修改密码

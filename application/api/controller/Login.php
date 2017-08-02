@@ -29,7 +29,7 @@ class Login extends controller
         echo returnApiError('密码输入有误');
            exit;
         }
-        if($userInfo['roleId']!=2){
+        if($userInfo['roleId']==1 || $userInfo['roleId']==4){
         echo returnApiError('没有权限');
         exit;
         }

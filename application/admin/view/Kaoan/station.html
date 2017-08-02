@@ -44,7 +44,8 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理 </a></li>
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a href="{:url('Kaoan/station')}?caseId={$caseInfo['Id']}">{$caseInfo['name']}</a></li>
                         <li><a>考站列表</a></li>
                     </ul>
                 </div>
@@ -54,10 +55,10 @@
                    
                    
                      <h4 class="section-subtitle">
-                     <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    <a class="btn btn-wide btn-lighter-1" href="javascript:history.go(-1)">返回</a>
                      {if condition="(role()==1)"}
-                   <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/addStation')}?caseId={$caseId}">添加考站</a>
-                   <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/caseGuidang')}?caseId={$caseId}">考案归档</a>
+                   <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/addStation')}?caseId={$caseInfo['Id']}">添加考站</a>
+                   <a class="btn btn-wide btn-lighter-1" href="{:url('Kaoan/caseGuidang')}?caseId={$caseInfo['Id']}">考案归档</a>
                    <?php if($togherMeeting){?>
                    <a class="btn btn-wide btn-lighter-1" href="javascript:;" onclick="anpai();">共识会安排</a>
                     <?php }?>
@@ -79,7 +80,7 @@
                                         <th>考站名称</th>
                                         <th>前期作业人员</th>
                                         <th>中期打分人员</th>
-                                         <th>SP</th>
+                                         <th>{$Think.session.roleName4}</th>
                                         <th>测验核心</th>
                                         <th>物品准备</th>
                                          <th>考案设计</th>
@@ -121,7 +122,7 @@
                                         <a href="javascript:;" data-target="#warning-modal" data-toggle="modal" onclick="del({$vo.Id})">删除</a>
 
                                         {else/}
-                                         <a href="{:url('Kaoan/addStation?Id='.$vo.Id)}">考生管理</a>
+                                         <a href="{:url('Kaoan/addStation?Id='.$vo.Id)}">{$Think.session.roleName3}管理</a>
                                         {/if}
                                         </td>
                                         
@@ -140,8 +141,8 @@
                            </div>
                             <form action="{:url('Kaoan/anpai')}" method="post" id="editForm3">
                                <ul class="editInfos">
-                               <?php if(isset($caseId)){?>
-                               <input type="hidden" name="caseId" value="{$caseId}" id="caseId"/>
+                               <?php if(isset($caseInfo['Id'])){?>
+                               <input type="hidden" name="caseId" value="{$caseInfo['Id']}" id="caseId"/>
                                <?php }?>
                  
                             <li><label><font color="#ff0000">* </font>地&nbsp;&nbsp;&nbsp;点：

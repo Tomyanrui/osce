@@ -12,13 +12,58 @@
                            
                            {if condition="(role() eq 1)"}
                            
-                            <li class="active-item"><a href="{:url('User/lst')}"><i class="fa fa-home" aria-hidden="true"></i><span>用户管理</span></a></li>
+                           
+                            <li class="has-child-item close-item">
+                                <a><i class="fa fa-cubes" aria-hidden="true"></i><span>用户管理</span></a>
+                                <ul class="nav child-nav level-1">
+                                   {volist name="keshi" id="vo"}
+                                    <li><a href="{:url('User/lst?departmentId='.$vo.Id)}">{$vo.name}</a></li>
+                                   {/volist}
+                                    
+                                </ul>
+                            </li>
                             <li class="active-item"><a href="{:url('User/dlst')}"><i class="fa fa-home" aria-hidden="true"></i><span>科室管理</span></a></li>
                             {/if}
                            
-                           
-                             <li class="active-item close-item"><a href="{:url('Kaoan/lst')}"><i class="fa fa-home" aria-hidden="true"></i><span>考案设计</span></a></li>
-                             <li class="active-item close-item"><a href="{:url('Result/lst')}"><i class="fa fa-home" aria-hidden="true"></i><span>评分结果</span></a></li>
+                           <li class="has-child-item close-item">
+                                <a><i class="fa fa-cubes" aria-hidden="true"></i><span>医事科别</span></a>
+                                <ul class="nav child-nav level-1">
+                                    
+                                    <li class="has-child-item close-item">
+                                        <a>西医</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li><a href="{:url('Kaoan/lst?category=1')}">前期作业</a></li>
+                                            <li><a href="{:url('Result/lst?category=1')}">期中作业</a></li>
+                                            <li><a href="#">终端作业</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="has-child-item close-item">
+                                        <a>中医</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li><a href="{:url('Kaoan/lst?category=4')}">前期作业</a></li>
+                                            <li><a href="{:url('Result/lst?category=4')}">期中作业</a></li>
+                                            <li><a href="#">终端作业</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="has-child-item close-item">
+                                        <a>牙医</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li><a href="{:url('Kaoan/lst?category=2')}">前期作业</a></li>
+                                            <li><a href="{:url('Result/lst?category=2')}">期中作业</a></li>
+                                            <li><a href="#">终端作业</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="has-child-item close-item">
+                                        <a>药学</a>
+                                        <ul class="nav child-nav level-2 ">
+                                            <li><a href="{:url('Kaoan/lst?category=3')}">前期作业</a></li>
+                                            <li><a href="{:url('Result/lst?category=3')}">期中作业</a></li>
+                                            <li><a href="#">终端作业</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                          
                             
                             
                            

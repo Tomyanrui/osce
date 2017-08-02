@@ -41,6 +41,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="mobile" class="col-sm-3 control-label">科室编码<span class="required">*</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="coding" name="coding" value="<?php if(isset($department['coding']))echo  $department['coding'];?>" placeholder="科室编码必须为大写字母" required   <?php if(isset($department['coding'])){echo 'readonly';}?>>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="mobile" class="col-sm-3 control-label">手机号码<span class="required">*</span></label>
                                             <div class="col-sm-6">
                                                 <input type="mobile" class="form-control" id="mobile" name="phone" value="<?php if(isset($department['phone']))echo  $department['phone'];?>" required>

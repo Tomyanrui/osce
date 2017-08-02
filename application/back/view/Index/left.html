@@ -1,0 +1,31 @@
+<div class="left-sidebar">
+            <div class="left-sidebar-header">
+                <div class="left-sidebar-title">菜单列表</div>
+                <div class="left-sidebar-toggle c-hamburger c-hamburger--htla hidden-xs" data-toggle-class="left-sidebar-collapsed" data-target="html">
+                    <span></span>
+                </div>
+            </div>
+            <div id="left-nav" class="nano">
+                <div class="nano-content">
+                    <nav>
+                        <ul class="nav" id="main-nav">
+                           
+                           {if condition="(role() eq 4)"}
+                           
+                            <li class="active-item"><a href="{:url('Hospital/lst')}"><i class="fa fa-home" aria-hidden="true"></i><span>医院管理</span></a></li>
+                            
+                            {/if}
+                           
+                           
+                             <!-- <li class="active-item close-item"><a href="{:url('Kaoan/lst')}"><i class="fa fa-home" aria-hidden="true"></i><span>考案设计</span></a></li>
+                             <li class="active-item close-item"><a href="{:url('Result/lst')}"><i class="fa fa-home" aria-hidden="true"></i><span>评分结果</span></a></li>
+                             -->
+                            
+                           
+                           
+                           
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>

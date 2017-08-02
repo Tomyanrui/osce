@@ -9,8 +9,13 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">考案管理 </a></li>
-                        <li><a>列表</a></li>
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a>{if condition="($category==1)"}西医
+                               {elseif condition="($category==2)"/}牙医
+                               {elseif condition="($category==3)"/}药学
+                               {elseif condition="($category==4)"/}中医
+                               {/if}</a></li>
+                        <li><a>前期作业</a></li>
                     </ul>
                 </div>
             </div>
@@ -30,11 +35,8 @@
                                         <th>序号</th>
                                         <th>考案编号</th>
                                         <th>考案名称</th>
-                                        <th>预定测验日期</th>
+                                        <th>前期作业预定完成日期</th>
                                         <th>测验日期</th>
-
-                                      
-                                        <th>类别</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
@@ -46,10 +48,6 @@
                                         <td>{$vo.name}</td>
                                         <td>{$vo.firstdoneTime}</td>
                                         <td>{$vo.textTime}</td>
-                                        
-                                        <td>
-                                           {if condition="$vo.category eq 1"}西医{elseif condition="$vo.category eq 2"/}牙医{elseif condition="$vo.category eq 3"/}药学{else/}中医{/if}
-                                        </td>
                                         <td>
                                          <a href="{:url('Kaoan/station?caseId='.$vo.Id)}">考站({$vo.stationNumber})</a>&nbsp;&nbsp;&nbsp;
                                         {if condition="(role()==1)"}

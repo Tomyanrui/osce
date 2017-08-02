@@ -23,18 +23,17 @@ class Kaoan extends controller
           echo  returnApiError('用户Id不存在');
           exit;
         }
-        $caseId=Db::name('case_station')->where('examier',$aJson['userId'])->where('state',0)->where('status',1)->column('caseId');
-        $caseid=array_unique($caseId);
-        $caseInfo=array();
-        foreach ($caseid as $key => $value) {
-           $case=Db::name('text_case')->where('status',1)->find($value);
-           if($case){
-            $caseInfo[$key]=$case;
-            $caseInfo[$key]['username']=db('user')->where('id',$aJson['userId'])->value('username');
+        
+        $work_unitId=db('user')->where('id',$aJson['userId'])->value('work_unitId');
+        $caseInfo=db('text_case')->where('work_unitId',$work_unitId)->where('status',1)->select();
+        foreach ($caseInfo as $key => $value) {
+           $stationInfo=db('case_station')->where('caseId',$value['Id'])->where('examier',$aJson['userId'])->where('state',0)->find();
+           if(empty($stationInfo)){
+              unset($caseInfo[$key]);
            }
-           
         }
         $caseInfo=array_values($caseInfo);
+        
         if(empty($caseInfo)){
           echo  returnApiError('暂无相关考案信息');
           exit;

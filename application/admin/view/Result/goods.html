@@ -9,7 +9,8 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Result/station')}.?caseId={$caseId}">考站列表 </a></li>
+                       <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a href="{:url('Result/station')}.?caseId={$caseId}">{$caseName}</a></li>
                         <li><a>物品准备</a></li>
                         {if condition="($type==1)"}
                         <li><a>考生设备</a></li>

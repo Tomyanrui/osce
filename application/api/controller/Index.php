@@ -25,7 +25,16 @@ class Index extends controller
             $test = 1;
             //登录接口
           //  $aJson = array('Pack'=>'Login' , 'Interface'=>'login','Username'=>13552453024,'Password'=>'123456');
-            $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'caseList','userId'=>16,'token'=>'c16258f1ae3800c0e898dee8449e76a7');
+            $aJson = array('Pack'=>'Questionnaire' , 'Interface'=>'caseList','userId'=>4,'token'=>'4c7cecd2040e3ec2a0eeb007231217ba');
+          //  $aJson = array('Pack'=>'Questionnaire' , 'Interface'=>'getQuestion','caseId'=>2,'token'=>'4c7cecd2040e3ec2a0eeb007231217ba');
+          // $aJson = array('Pack'=>'Questionnaire' , 'Interface'=>'answerSubmit','token'=>'4c7cecd2040e3ec2a0eeb007231217ba',
+          //                'caseId'=>2,'studentId'=>4,
+          //                'answer'=>array(
+          //  array('questionId'=>1,'type'=>1,'answer'=>2),
+          //  array('questionId'=>2,'type'=>2,'answer'=>'5,6'),
+          //  array('questionId'=>3,'type'=>3,'answer'=>'文本答案'),
+          //  array('questionId'=>4,'type'=>4,'answer'=>'10,8,9')
+          //   )); 
            // $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'index','caseId'=>1);
            // $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'detail','stationId'=>3,'userId'=>2);
             // $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'doneInfo','stationId'=>2,'userId'=>2);
@@ -35,7 +44,7 @@ class Index extends controller
            //  $aJson = array('Pack'=>'Kaoan' , 'Interface'=>'doneResult','stationId'=>1,'studentId'=>4);
             // $aJson = array('Pack'=>'Login' , 'Interface'=>'sendMessage','phone'=>'15535730438');
             // $aJson = array('Pack'=>'Login' , 'Interface'=>'changePassword','phone'=>15949208653,'password'=>'12345678','code'=>'880908');
-            // echo json_encode($aJson,JSON_UNESCAPED_UNICODE);exit;
+          //  echo json_encode($aJson,JSON_UNESCAPED_UNICODE);exit;
         }
 
         $Control = $aJson['Pack'];

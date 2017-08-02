@@ -29,6 +29,7 @@
                                         <th>编号</th>
                                         <th>名称</th>
                                         <th>负责人</th>
+                                        <th>科室编码</th>
                                         <th>联系方式</th>
                                         <th>操作</th>
                                     </tr>
@@ -39,6 +40,7 @@
                                         <td>{$vo.Id}</td>
                                         <td>{$vo.name}</td>
                                         <td>{$vo.directior}</td>
+                                        <td>{$vo.coding|default="未知"}</td>
                                         <td>{$vo.phone}</td>
                                         <td>
                                         <a href="{:url('User/dadd?Id='.$vo.Id)}">编辑</a>&nbsp;&nbsp;&nbsp;

@@ -93,7 +93,8 @@ var w,h,className;
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Kaoan/lst')}">考案管理 </a></li>
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a href="{:url('Kaoan/station')}?caseId={$caseId}">{$caseName}</a></li>
                         <li><a>考核表</a></li>
                     </ul>
                 </div>
@@ -103,6 +104,7 @@ var w,h,className;
                  
                       <h4 class="section-subtitle">
                       <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                      
                         <?php if(isset($bianji) && ($bianji==1)){?>
                    <a class="btn btn-wide " href="javascript:;" id="btn6">添加评分项</a>
                    <a class="btn btn-wide biaozhun" href="javascript:;" >添加评分标准</a>

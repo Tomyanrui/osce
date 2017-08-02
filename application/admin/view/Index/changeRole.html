@@ -1,0 +1,73 @@
+{include file="Index/top"/}
+<body>
+<div class="wrap">
+    {include file="Index/header"/}
+    <div class="page-body">
+        {include file="Index/left"/}
+        <div class="content">
+            <div class="content-header">
+                <div class="leftside-content-header">
+                    <ul class="breadcrumbs">
+                        <li><i class="fa fa-home" aria-hidden="true"></i><a href="#">修改角色</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row animated fadeInUp">
+                 <div class="col-sm-12">
+                    <h4 class="section-subtitle">
+                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                    </h4>
+                    <div class="panel">
+                        <div class="panel-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form id="changeRole" class="form-horizontal form-stripe" action="" method="post">
+                                        
+                                      
+                                        <div class="form-group">
+                                           
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="phone" name="roleName1"  required value="{$work_unit['roleName1']}">
+                                           
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                           
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="notify" name="roleName2"  required value="{$work_unit['roleName2']}">
+                                            </div>
+                                        </div>
+                                      
+                                        <div class="form-group">
+                                         
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="password" name="roleName3"  required value="{$work_unit['roleName3']}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                          
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="again" name="roleName4"  required value="{$work_unit['roleName4']}">
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-3 col-sm-9">
+                                                <button type="submit" class="btn btn-primary">修改</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         {include file="Index/right"/}
+        <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
+    </div>
+</div>
+
+</body>
+ {include file="Index/footer"/}

@@ -1,4 +1,47 @@
 {include file="Index/top"/}
+<link rel="stylesheet" href="__PUBLIC__/alert/css/common.css"/>
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script>
+var w,h,className;
+      function getSrceenWH(){
+        w = $(window).width();
+        h = $(window).height();
+        $('#dialogBg').width(w).height(h);
+      }
+
+      window.onresize = function(){
+        getSrceenWH();
+      }
+      $(window).resize();
+
+      $(function(){
+        getSrceenWH();
+         //关闭弹窗
+        $('.claseDialogBtn').click(function(){  
+            $('#dialogBg').fadeOut(300,function(){
+                $('#dialog').addClass('bounceOutUp').fadeOut();
+            });
+        });
+      });
+      
+       function getWenjuan(caseId){
+           className = $(this).attr('class');
+           $('#dialogBg').fadeIn(300);
+           $('#dialog').removeAttr('class').addClass('animated '+className+'').fadeIn();
+           $('#caseId').val(caseId);
+           $.getJSON("{:url('Result/getWenjuan')}",{caseId:caseId},function(data){
+               info=JSON.parse(data);
+               if(info.Id==''){
+                alert('异常错误');
+                return false;
+                }
+               
+               $('#wenjuan').val(info.wenjuan);
+            });
+        }
+      
+
+</script>
 <body>
 <div class="wrap">
    {include file="Index/header"/}
@@ -9,8 +52,13 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">评分结果 </a></li>
-                        <li><a>考案列表</a></li>
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a>{if condition="($category==1)"}西医
+                               {elseif condition="($category==2)"/}牙医
+                               {elseif condition="($category==3)"/}药学
+                               {elseif condition="($category==4)"/}中医
+                               {/if}</a></li>
+                        <li><a>期中作业</a></li>
                     </ul>
                 </div>
             </div>
@@ -26,7 +74,7 @@
                                         <th>序号</th>
                                         <th>考案编号</th>
                                         <th>考案名称</th>
-                                        <th>预定测验日期</th>
+                                        <th>预定完成日期</th>
                                         <th>测验日期</th>
 
                                       
@@ -48,7 +96,9 @@
                                         </td>
                                         <td>
                                          <a href="{:url('Result/station?caseId='.$vo.Id)}">考站({$vo.stationNumber})</a>
-                                       
+                                         {if condition="(role()==1)"}
+                                           &nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" onclick="getWenjuan({$vo.Id})">问卷调查</a>
+                                         {/if}
                                         </td>
                                     </tr>
                                     {/volist}
@@ -57,6 +107,23 @@
                                     </tbody>
                                 </table>
                             </div>
+                             <div id="dialogBg"></div>
+                <div id="dialog" class="animated" style="width:325px;height:270px;">
+                    <img class="dialogIco" width="50" height="50" src="__PUBLIC__/alert/images/ico.png" alt="" />
+                    <div class="dialogTop">
+                        <a href="javascript:;" class="claseDialogBtn">关闭</a>
+                    </div>
+                    <form action="{:url('Result/wenjuan')}" method="post" id="editForm" onSubmit="return check();">
+                        <ul class="editInfos">
+                               <input type="hidden" name="caseId"  id="caseId"/>
+                 
+                            <li><label><font color="#ff0000">* </font>问卷名称：<input type="text" name="wenjuan" required  class="ipt" id="wenjuan"/></label></li>
+                            
+                            
+                            <li><input type="submit" value="确认提交" class="submitBtn" /></li>
+                        </ul>
+                    </form>
+                </div>
                         </div>
                     </div>
                 </div>

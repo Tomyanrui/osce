@@ -8,21 +8,18 @@ class User extends Admin
   //用户列表
   public function lst(){
      $model=db('user');
+     $departmentId=input('departmentId')?input('departmentId'):db('department')->where('work_unitId',session('work_unitId'))->min('Id');
      $userInfo=array();
-     $userInfo=$model->where('work_unitId',session('userId'))->select();
-     foreach($userInfo as $key=>$val){
-      $department=db('department')->where('id',$val['departmentId'])->value('name');
-      $userInfo[$key]['department']=$department ? $department : '未知';
-     }
-     $this->assign('userInfo',$userInfo);
+     $userInfo=$model->where('work_unitId',session('work_unitId'))->where('departmentId',$departmentId)->select();
+     $this->assign(['userInfo'=>$userInfo,'departmentName'=>db('department')->where('Id',$departmentId)->value('name')]);
      return $this->fetch();
   }
   //科室列表
   public function dlst(){
      $model=db('department');
-     $work_unitId=db('user')->where('id',session('userId'))->value('work_unitId');
+   
      $departmentInfo=array();
-     $departmentInfo=$model->where('work_unitId',$work_unitId)->select();
+     $departmentInfo=$model->where('work_unitId',session('work_unitId'))->select();
      $this->assign('department',$departmentInfo);
      return $this->fetch();
   }
@@ -31,6 +28,18 @@ class User extends Admin
     $model=db('user');
   	 if(request()->isPost()){
         if(input('post.id')){
+         $id=db('user')->where('work_unitId',session('work_unitId'))->where('employeeNumber',input('post.employeeNumber'))->value('id');
+         if($id){
+         if($id!=input('post.id')){
+             return $this->error('员工编号不能重复');
+         }
+         }
+         $userid=db('user')->where('phone',input('post.phone'))->value('id');
+         if($userid){
+          if($userid!=input('post.id')){
+             return $this->error('手机号不能重复');
+         }
+         }
          $arr=['username'=>input('post.username'),
              'phone'=>input('post.phone'),
              'employeeNumber'=>input('post.employeeNumber'),
@@ -43,11 +52,17 @@ class User extends Admin
           }
           return $this->error('修改失败','lst',1);
        }else{
+        if(db('user')->where('work_unitId',session('work_unitId'))->where('employeeNumber',input('post.employeeNumber'))->find()){
+                 return $this->error('员工编号不能重复');
+              }
+        if(db('user')->where('phone',input('post.phone'))->find()){
+                 return $this->error('手机号不能重复');
+              }
         $arr=['username'=>input('post.username'),
              'phone'=>input('post.phone'),
              'employeeNumber'=>input('post.employeeNumber'),
              'departmentId'=>input('post.departmentId'),
-             'work_unitId'=>$model->where('id',session('userId'))->value('work_unitId'),
+             'work_unitId'=>session('work_unitId'),
              'password'=>md5('123456'),
              'roleId'=>2,
              'registerTime'=>date('Y-m-d H:i:s')
@@ -59,8 +74,8 @@ class User extends Admin
         return $this->error('添加失败','add',1);
        }
   	 }
-     $work_unitId=$model->where('id',session('userId'))->value('work_unitId');
-     $departmentInfo=db('department')->where('work_unitId',$work_unitId)->select();
+    
+     $departmentInfo=db('department')->where('work_unitId',session('work_unitId'))->select();
      if(input('id')){
       $userInfo=$model->find(input('id'));
       $this->assign('user',$userInfo);
@@ -72,13 +87,19 @@ class User extends Admin
   public function dadd(){
     $model=db('department');
      if(request()->isPost()){
-       if(input('post.Id')){
+      
+      if(input('post.Id')){
+        $departmentId=$model->where('coding',input('post.coding'))->where('work_unitId',session('work_unitId'))->value('Id');
+         if($departmentId){
+           if($departmentId!=input('post.Id')){
+               return $this->error('科室编码重复');
+           }
+         }
          $arr=['name'=>input('post.name'),
              'directior'=>input('post.directior'),
              'phone'=>input('post.phone'),
              'infomation'=>input('post.infomation'),
-           
-             
+             'coding'=>input('post.coding')
              ]; 
           $re=$model->where('Id',input('post.Id'))->update($arr);
           if($re){
@@ -86,12 +107,16 @@ class User extends Admin
           }
           return $this->error('修改失败','dlst',1);
        }else{
+        if($model->where('coding',input('post.coding'))->where('work_unitId',session('work_unitId'))->value('Id')){
+         return $this->error('科室编码重复');
+      }
         $arr=['name'=>input('post.name'),
              'directior'=>input('post.directior'),
              'phone'=>input('post.phone'),
              'infomation'=>input('post.infomation'),
              'addTime'=>date('Y-m-d H:i:s'),
-             'work_unitId'=>db('user')->where('id',session('userId'))->value('work_unitId'),
+             'coding'=>input('post.coding'),
+             'work_unitId'=>session('work_unitId'),
              ];
         $re=$model->insert($arr);
         if($re){
@@ -128,5 +153,19 @@ class User extends Admin
        return $this->success('删除成功','lst',1);
     }
     return $this->error('删除失败','lst',1);
+  }
+  //获取科室对应的编码
+  public function getcoding(){
+    if(!input('departmentId')){
+      return json_encode('参数错误');
+      exit;
+    }
+    $department=db('department')->where('Id',input('departmentId'))->find();
+    if(!$department['coding']){
+      return json_encode('科室编码错误');
+      exit;
+    }
+    return json_encode($department);
+    exit;
   }
 }

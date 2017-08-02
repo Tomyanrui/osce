@@ -1,6 +1,42 @@
 {include file="Index/top"/}
+<script src="https://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+<script>
+    function check(){
+        var str= $("input[name='category']:checked").val();
+        var name=$("#name").val();
+        var number=$("#number").val();
+        var textTime=$("#calendar2").val();
+        var firstdoneTime=$("#calendar1").val();
 
-
+        if(str==undefined){
+            alert('请先选择考案类别');
+            return false;
+        }
+        if(name=='' || number=='' || textTime=='' || firstdoneTime==''){
+            alert('请先完善所有字段');
+            return false;
+        }
+        onecapital=/^[A-Z][0-9]+$/;
+        if(!onecapital.test(number)){
+            alert('考案编号首位必须为大写字母,且后面为数字');
+            return false;
+        }
+    }
+    $(document).ready(function(){
+        $("input[name='category']").click(function(){
+            str= $("input[name='category']:checked").val();
+            if(str=='1'){
+                $("#number").val('A');
+            }else if(str=='2'){
+                $("#number").val('B');
+            }else if(str=='3'){
+                $("#number").val('C');
+            }else if(str=='4'){
+                $("#number").val('D');
+            }
+        })
+    });
+</script>
 <body>
 <div class="wrap">
     {include file="Index/header"/}
@@ -10,7 +46,7 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">考案管理</a></li>
+                        <li><i class="fa fa-columns" aria-hidden="true"></i><a href="#">医事科别</a></li>
                         <li><a>添加考案</a></li>
                     </ul>
                 </div>
@@ -19,7 +55,8 @@
                
                 <div class="col-sm-12">
                     <h4 class="section-subtitle">
-                   <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
+                   
+                    <a class="btn btn-wide btn-lighter-1" href="javascript:history.go(-1)">返回</a>
                     </h4>
                     <div class="panel">
                         <div class="panel-content">
@@ -32,30 +69,39 @@
                                             
                                             <div class="col-sm-6">
                                                 <div class="radio radio-custom radio-inline radio-primary">
-                                                    <input type="radio" id="radioCustom1" name="category" value="1" 
+                                                    <input type="radio" id="radioCustom1" name="category" value="1"   
+                                                     <?php if(isset($case['Id'])){echo 'disabled="true"';}?>   
                                                     <?php if(!in_array('1',explode(',',$cate))){echo 'disabled';}?>
                                                     <?php if(isset($case['category']) && $case['category']==1 ){echo 'checked';}?>
+                                                   
                                                     >
+
                                                     <label for="radioCustom1">西医</label>
                                                 </div>
                                                 <div class="radio radio-custom radio-inline radio-primary">
                                                     <input type="radio" id="radioCustom2" name="category" value="2"
+                                                      <?php if(isset($case['Id'])){echo 'disabled="true"';}?>  
                                                     <?php if(!in_array('2',explode(',',$cate))){echo 'disabled';}?>
                                                     <?php if(isset($case['category']) && $case['category']==2 ){echo 'checked';}?>
+                                                   
                                                     >
                                                     <label for="radioCustom2">牙医</label>
                                                 </div>
                                                 <div class="radio radio-custom radio-inline radio-primary">
                                                     <input type="radio" id="radioCustom3" name="category" value="3"
+                                                      <?php if(isset($case['Id'])){echo 'disabled="true"';}?>  
                                                     <?php if(!in_array('3',explode(',',$cate))){echo 'disabled';}?>
                                                      <?php if(isset($case['category']) && $case['category']==3 ){echo 'checked';}?>
+                                                  
                                                     >
                                                     <label for="radioCustom3">药学</label>
                                                 </div>
                                                 <div class="radio radio-custom radio-inline radio-primary">
                                                     <input type="radio" id="radioCustom4" name="category" value="4"
+                                                      <?php if(isset($case['Id'])){echo 'disabled="true"';}?>  
                                                     <?php if(!in_array('4',explode(',',$cate))){echo 'disabled';}?>
                                                      <?php if(isset($case['category']) && $case['category']==4 ){echo 'checked';}?>
+                                                 
                                                     >
                                                     <label for="radioCustom4">中医</label>
                                                 </div>
@@ -73,11 +119,11 @@
                                         <div class="form-group">
                                             <label for="mobile" class="col-sm-3 control-label">考案编号<span class="required">*</span></label>
                                             <div class="col-sm-6">
-                                                <input type="text" class="form-control" id="number" name="number" value="<?php if(isset($case['number']))echo  $case['number'];?>" >
+                                                <input type="text" class="form-control" id="number" name="number" value="<?php if(isset($case['number']))echo  $case['number'];?>"  <?php if(isset($case['number'])){echo 'readonly';}?>>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                           <label for="mobile" class="col-sm-3 control-label">预定测验日期<span class="required">*</span></label>
+                                           <label for="mobile" class="col-sm-3 control-label">预定完成日期<span class="required">*</span></label>
                                             <div class="col-sm-6 ">
                                               
                                                 <input type="text" class="form-control"  name="firstdoneTime" value="<?php if(isset($case['firstdoneTime']))echo  $case['firstdoneTime'];?>" id="calendar1" maxlength="10" onfocus="$(this).calendar()" readonly />
@@ -132,35 +178,23 @@
         <a href="#" class="scroll-to-top"><i class="fa fa-angle-double-up"></i></a>
     </div>
 </div>
-<script src="__PUBLIC__/javascripts/jquery.min.js"></script>
+
+
+<script type="text/javascript" src="__PUBLIC__/date/jquery-calendar.js"></script> 
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/date/jquery-calendar.css" /> 
+
+
+
 <script src="__PUBLIC__/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="__PUBLIC__/vendor/nano-scroller/nano-scroller.js"></script>
 <script src="__PUBLIC__/javascripts/template-script.min.js"></script>
 <script src="__PUBLIC__/javascripts/template-init.min.js"></script>
-<script src="__PUBLIC__/vendor/bootstrap_max-lenght/bootstrap-maxlength.js"></script>
+
+<script src="__PUBLIC__/vendor/chart-js/chart.min.js"></script>
+<script src="__PUBLIC__/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="__PUBLIC__/javascripts/examples/dashboard.js"></script>
 <script src="__PUBLIC__/vendor/select2/js/select2.min.js"></script>
-<script src="__PUBLIC__/vendor/input-masked/inputmask.bundle.min.js"></script>
-<script src="__PUBLIC__/vendor/input-masked/phone-codes/phone.js"></script>
-<script src="__PUBLIC__/vendor/jquery-validation/jquery.validate.min.js"></script>
-<script src="__PUBLIC__/javascripts/examples/forms/validation.js"></script>
 
-<script src="__PUBLIC__/vendor/bootstrap_time-picker/js/bootstrap-timepicker.js"></script>
-
-<script src="__PUBLIC__/javascripts/examples/forms/advanced.js"></script>
-<script type="text/javascript" src="__PUBLIC__/date/jquery-1.3.2.js"></script> 
-<script type="text/javascript" src="__PUBLIC__/date/jquery-calendar.js"></script> 
-<link rel="stylesheet" type="text/css" href="__PUBLIC__/date/jquery-calendar.css" /> 
-
-<script>
-    function check(){
-        var str= $("input[name='category']:checked").val();
-        
-        if(str==undefined){
-            alert('请先选择考案类别');
-            return false;
-        }
-    }
-</script>
 </body>
 </html>
 

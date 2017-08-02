@@ -9,7 +9,8 @@
             <div class="content-header">
                 <div class="leftside-content-header">
                     <ul class="breadcrumbs">
-                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="{:url('Result/lst')}">评分结果 </a></li>
+                        <li><i class="fa fa-table" aria-hidden="true"></i><a href="#">医事科别 </a></li>
+                        <li><a href="{:url('Result/station')}?caseId={$caseInfo['Id']}">{$caseInfo['name']}</a></li>
                         <li><a>考站列表</a></li>
                     </ul>
                 </div>
@@ -19,8 +20,8 @@
                    
                    
                      <h4 class="section-subtitle">
-                     <button class="btn btn-wide btn-lighter-1" onclick="history.go(-1);">返回</button>
-                  
+                     
+                     <a class="btn btn-wide btn-lighter-1" href="javascript:history.go(-1)">返回</a>
                     </h4>
                     
                    
@@ -38,7 +39,7 @@
                                         <th>考站名称</th>
                                         <th>前期作业人员</th>
                                         <th>中期打分人员</th>
-                                         <th>SP</th>
+                                         <th>{$Think.session.roleName4}</th>
                                         <th>测验核心</th>
                                        
                                         <th>物品准备</th>

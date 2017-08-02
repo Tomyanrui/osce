@@ -8,8 +8,9 @@ class Kaoan extends Admin
    //添加考案申请
 	public function add(){
 		$model=db('text_case');
-		$work_unitId=db('user')->where('id',session('userId'))->value('work_unitId');
+		
         if(request()->isPost()){
+
         	if(role()!=1){
 			      return $this->error('您没有权限');
        		  exit;
@@ -32,23 +33,29 @@ class Kaoan extends Admin
                    return $this->error('非本人不得修改');
                    exit;
                }
+               $category=db('text_case')->where('Id',input('post.Id'))->value('category');
                $arr=['name'=>input('post.name'),
-                     'number'=>input('post.number'),
                      'textTime'=>input('post.textTime'),
                      'firstdoneTime'=>input('post.firstdoneTime'),
                      'togherMeeting'=>input('post.togherMeeting')
                      ]; 
                $re=$model->where('Id',input('post.Id'))->update($arr);
                if($re){
-                  return $this->success('修改成功','lst',1);
+                 
+                return  $this->redirect('lst', ['category'=>$category]);
+                 //return $this->redirect('station', ['caseId' =>$caseId]);
                }
                return $this->error('修改失败');
              }else{
+
+              if(db('text_case')->where('work_unitId',session('work_unitId'))->where('number',input('post.number'))->find()){
+                 return $this->error('考案编号不能重复');
+              }
        	       $arr=['category'=>input('post.category'),
                      'name'=>input('post.name'),
                      'number'=>input('post.number'),
                      'uId'=>session('userId'),
-                     'work_unitId'=>$work_unitId,
+                     'work_unitId'=>session('work_unitId'),
                      'textTime'=>input('post.textTime'),
                      'togherMeeting'=>input('post.togherMeeting'),
                      'firstdoneTime'=>input('post.firstdoneTime'),
@@ -56,18 +63,16 @@ class Kaoan extends Admin
                ]; 
                $re=$model->insert($arr);
                if($re){
-                  return $this->success('添加成功','lst',1);
+                 
+                 return  $this->redirect('lst', ['category'=>input('post.category')]);
                }
                return $this->error('添加失败');
             }
         }
         
-		$cate=db('work_unit')->where('Id',$work_unitId)->value('category');
+		$cate=db('work_unit')->where('Id',session('work_unitId'))->value('category');
     if(input('id')){
       $caseInfo=db('text_case')->where('Id',input('id'))->find();
-     
-   
-
       $this->assign('case',$caseInfo);
     }
 		$this->assign('cate',$cate);
@@ -76,30 +81,22 @@ class Kaoan extends Admin
 	//考案列表
 	public function lst(){
     $case=array();
-    if(role()==1){
-		$work_unitId=db('user')->where('id',session('userId'))->value('work_unitId');
-
-		$case=db('text_case')->where('work_unitId',$work_unitId)->where('status',0)->select();
-    //return db('text_case')->getlastSql();
-		foreach($case as $key=>$val){
-            $case[$key]['stationNumber']=db('case_station')->where('caseId',$val['Id'])->count();
-		}
-    }
-    if(role()==2){
-        $caseId=Db::name('case_station')->where('teach',session('userId'))->whereor('examier',session('userId'))->column('caseId');
-        $caseid=array_unique($caseId);
-        foreach ($caseid as $key => $value) {
-          $caseInfo=Db::name('text_case')->where('status',0)->find($value);
-           if(!db('text_case')->where('Id',$value)->value('status') && $caseInfo){
-             $case[$key]=$caseInfo;
-             $case[$key]['stationNumber']=db('case_station')->where('caseId',$value)->count();
-             
-           }
-          
-        }
-    }
    
-		$this->assign('case',$case);
+    $category=input('category')?input('category'):1;
+    
+		$case=db('text_case')->where('work_unitId',session('work_unitId'))->where('status',0)->where('category',$category)->select();
+
+    foreach($case as $key=>$val){
+        $case[$key]['stationNumber']=db('case_station')->where('caseId',$val['Id'])->count();
+        if(role()==2){
+           $stationInfo=db('case_station')->where('caseId',$val['Id'])->where('teach',session('userId'))->whereor('examier',session('userId'))->find();
+           if(empty($stationInfo)){
+              unset($case[$key]);
+           } 
+         }
+		}
+    
+    $this->assign(['case'=>$case,'category'=>$category]);
 		return $this->fetch();
 	}
 	//删除考案
@@ -160,13 +157,13 @@ class Kaoan extends Admin
          foreach ($togher as $key => $value) {
            $togherUser[]=db('user')->find($value);
          }
-         $this->assign('caseInfo',db('text_case')->find(input('caseId')));
+         
          $this->assign('togherUser',$togherUser);
        }
-   
-       $this->assign('togherMeeting',$togherMeeting);
-       $this->assign('caseId',input('caseId'));
-       $this->assign('station',$station);
+       $this->assign(['caseInfo'=>db('text_case')->find(input('caseId')),
+                     'togherMeeting'=>$togherMeeting,
+                     'station'=>$station
+                     ]);
        return $this->fetch();
 	}
 	//添加考站
@@ -237,9 +234,12 @@ class Kaoan extends Admin
           return $this->error('添加失败');
           }
        }
-    
-       $this->assign('user',db('user')->where('roleId',2)->select());
-       $this->assign('shixi',db('user')->where('roleId',3)->select());
+       $caseId=input('caseId')?input('caseId'):db('case_station')->where('Id',input('Id'))->value('caseId');
+       $this->assign(['caseId'=>$caseId,
+                      'caseName'=>db('text_case')->where('Id',$caseId)->value('name'),
+                      'user'=>db('user')->where('roleId',2)->where('work_unitId',session('work_unitId'))->select(),
+                      'shixi'=>db('user')->where('roleId',3)->where('work_unitId',session('work_unitId'))->select()
+                      ]);
        if(input('Id')){
          $stationInfo=$model->find(input('Id'));
          $this->assign('station',$stationInfo);
@@ -258,7 +258,13 @@ class Kaoan extends Admin
       if($station['teach']==session('userId')){
         $this->assign('bianji',1);
       }
-      $this->assign(['stationId'=>input('stationId'),'cateInfo'=>$cateInfo,'standardInfo'=>$standardInfo,'employee'=>$station['employee']]);
+      $this->assign(['stationId'=>input('stationId'),
+                     'cateInfo'=>$cateInfo,
+                     'standardInfo'=>$standardInfo,
+                     'employee'=>$station['employee'],
+                     'caseId'=>$station['caseId'],
+                     'caseName'=>db('text_case')->where('Id',$station['caseId'])->value('name')
+                     ]);
       return $this->fetch();
     }
     //删除考站考核表评分标准
@@ -409,17 +415,25 @@ class Kaoan extends Admin
         return  json_encode(3);
         exit;
       }
+      if(db('user')->where('work_unitId',session('work_unitId'))->where('employeeNumber',input('employeeNumber'))->find()){
+        return  json_encode(4);
+        exit;
+      }
         $arr=['username'=>input('name'),
               'phone'=>input('phone'),
               'employeeNumber'=>input('employeeNumber'),
               'roleId'=>3,
-              'work_unitId'=>db('user')->where('Id',session('userId'))->value('work_unitId'),
+              'work_unitId'=>session('work_unitId'),
+              'departmentId'=>db('user')->where('id',session('userId'))->value('departmentId'),
               'password'=>md5('123456'),
               'registerTime'=>date('Y-m-d H:i:s')
         ];
         $re=db('user')->insert($arr);
         if($re){
           return  json_encode(2);
+          exit;
+        }else{
+          return  json_encode(1);
           exit;
         }
       
@@ -457,11 +471,13 @@ class Kaoan extends Admin
       $type=input('type')?input('type'):1;
       $model=db('goods');
       $goods=$model->where('stationId',input('stationId'))->where('type',$type)->select();
-      
-      $this->assign('goods',$goods);
-      $this->assign('type',$type);
-      $this->assign('stationId',input('stationId'));
-      $this->assign('caseId',db('case_station')->where('Id',input('stationId'))->value('caseId'));
+      $caseId=db('case_station')->where('Id',input('stationId'))->value('caseId');
+      $caseName=db('text_case')->where('Id',$caseId)->value('name');
+       $this->assign(['goods'=>$goods,'type'=>$type,
+                      'stationId'=>input('stationId'),
+                      'caseId'=>$caseId,
+                      'caseName'=>$caseName
+                      ]);
       return $this->fetch();
     }
     //考案物品添加
@@ -606,6 +622,7 @@ class Kaoan extends Admin
         $this->assign('detail',db('text_detail')->find(input('detailId')));
       }
       $this->assign('caseId',$stationInfo['caseId']);
+      $this->assign('caseName',db('text_case')->where('Id',$stationInfo['caseId'])->value('name'));
       return $this->fetch();
     }
 	  //考站检查完成后的归档
@@ -708,10 +725,9 @@ class Kaoan extends Admin
       if(!input('stationId')){
          return $this->error('数据异常');
       }
-      $work_unitId=db('user')->where('id',session('userId'))->value('work_unitId');
       $caseId=db('case_station')->where('Id',input('stationId'))->value('caseId');
       $category=db('text_case')->where('id',$caseId)->value('category');
-      $caseInfo=db('text_case')->where('work_unitId',$work_unitId)->where('category',$category)->where('status',1)
+      $caseInfo=db('text_case')->where('work_unitId',session('work_unitId'))->where('category',$category)->where('status',1)
                 ->field('Id')->select();
       foreach ($caseInfo as $key => $value) {
         $stationInfo[]=db('case_station')->where('caseId',$value['Id'])->field('Id,employee,text_core')->select();
@@ -769,6 +785,13 @@ class Kaoan extends Admin
       }
       db('case_station')->where('Id',input('stationId'))->update(['employee'=>input('employee')]);
       return $this->redirect('kaohe',['stationId'=>input('stationId')]);
+      exit;
+    }
+    //中期评分人员添加考生（根据本人的科室）
+    public function getDepartmentId(){
+      $departmentId=db('user')->where('id',session('userId'))->value('departmentId');
+      $departmentInfo=db('department')->find($departmentId);
+      return  json_encode($departmentInfo);
       exit;
     }
 }
